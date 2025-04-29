@@ -1,85 +1,114 @@
 NAME	= minishell
 
+ROOT_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g -I include
 
-LIBFT	= ./libft/libft.a
+# headers
+HEADERS_DIRECTORY := $(ROOT_DIR)/include
+HEADERS := $(addprefix $(HEADERS_DIRECTORY)/, minishell.h)
 
-# Source Files
-SRC		= \
-	./src/main.c \
-	./src/environment/environment_utils.c \
-	./src/environment/variable_expansion.c \
-	./src/input/input_handling.c \
-	./src/input/syntax_validation.c \
-	./src/input/syntax_validation_utils.c \
-	./src/input/delimiter_utils.c \
-	./src/input/quotes_handler.c \
-	./src/input/parenthesis_validation.c \
-	./src/lexer/lexer_main.c \
-	./src/lexer/lexer_process.c \
-	./src/lexer/lexer_token.c \
-	./src/lexer/lexer_assign_types.c \
-	./src/lexer/lexer_state_handler.c \
-	./src/lexer/lexer_state_utils.c \
-	./src/lexer/lexer_utils.c \
-	./src/parser/parser.c \
-	./src/parser/parser_utils.c \
-	./src/parser/heredoc_init.c \
-	./src/parser/heredoc_loop.c \
-	./src/parser/heredoc_cleanup.c \
-	./src/parser/heredoc_handler.c \
-	./src/parser/heredoc_creation.c \
-	./src/interpreter/interpreter.c \
-	./src/pipe/pipe.c \
-	./src/builtin/builtin_handler.c \
-	./src/builtin/builtin_pwd_env.c \
-	./src/builtin/builtin_echo.c \
-	./src/builtin/builtin_exit.c \
-	./src/builtin/builtin_cd.c \
-	./src/builtin/builtin_export.c \
-	./src/builtin/builtin_unset.c \
-	./src/execute/command_init.c \
-	./src/execute/command_heredoc.c \
-	./src/execute/process_command_tokens.c \
-	./src/execute/command_files.c \
-	./src/execute/execute_external.c \
-	./src/execute/process_execution.c \
-	./src/execute/process_redirections.c \
-	./src/execute/path_builder.c \
-	./src/signals/prompt_signals.c \
-	./src/signals/pipe_signals.c \
-	./src/signals/heredoc_signals.c \
-	./src/signals/child_signals.c
+# source files
+SOURCES_DIRECTORY := $(ROOT_DIR)/src
+OBJECTS_DIRECTORY := $(ROOT_DIR)/build
+SOURCES		:= $(addprefix $(SOURCES_DIRECTORY)/,\
+			main.c \
+			$(addprefix environment/, environment_utils.c variable_expansion.c) \
+			$(addprefix input/, input_handling.c syntax_validation.c \
+				syntax_validation_utils.c delimiter_utils.c quotes_handler.c \
+				parenthesis_validation.c) \
+			$(addprefix lexer/, lexer_main.c lexer_process.c lexer_assign_types.c \
+				lexer_state_handler.c lexer_state_utils.c lexer_utils.c lexer_token.c) \
+			$(addprefix parser/, parser.c parser_utils.c heredoc_init.c \
+				heredoc_loop.c heredoc_cleanup.c heredoc_handler.c heredoc_creation.c) \
+			$(addprefix interpreter/, interpreter.c) \
+			$(addprefix pipe/, pipe.c) \
+			$(addprefix builtin/, builtin_handler.c builtin_pwd_env.c builtin_echo.c \
+				builtin_exit.c builtin_cd.c builtin_export.c builtin_unset.c) \
+			$(addprefix execute/, command_init.c command_heredoc.c process_command_tokens.c \
+				command_files.c execute_external.c process_execution.c process_redirections.c \
+				path_builder.c) \
+			$(addprefix signals/, prompt_signals.c pipe_signals.c heredoc_signals.c \
+				child_signals.c) \
+)
 
+OBJECTS := $(patsubst $(SOURCES_DIRECTORY)/%.c,$(OBJECTS_DIRECTORY)/%.o, $(SOURCES))
 
-OBJ		= $(SRC:.c=.o)
+# test framework
+CUNIT_DIRECTORY := $(ROOT_DIR)/lib/cunit
+CUNIT := $(CUNIT_DIRECTORY)/lib/libcunit.a
+CUNIT_LIB := -L$(CUNIT_DIRECTORY)/lib -lcunit
+TEST_SOURCES := $(addprefix test/, \
+		test_runner.c  test_builtin_cd.c \
+)
 
-all: $(NAME)
+TEST_HEADER := $(ROOT_DIR)/test/test.h
+TEST_OBJECTS := $(patsubst %.c, $(OBJECTS_DIRECTORY)/%.o, $(TEST_SOURCES))
+TEST_EXEC := test_runner
 
-$(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
-	echo "$(NAME) generated"
+# libft
+LIBFT_DIRECTORY := $(ROOT_DIR)/libft
+LIBFT := $(LIBFT_DIRECTORY)/libft.a
+
+CFLAGS	= -Wall -Wextra -Werror -g -Iinclude -I$(CUNIT_DIRECTORY)/include
+
+all: $(OBJECTS_DIRECTORY) $(LIBFT) $(NAME)
+
+YELLOW=\033[0;33m
+GREEN=\033[0;32m
+NC=\033[0m
+
+$(CUNIT):
+	@if [ ! -d "$(CUNIT_DIRECTORY)" ]; then \
+		echo "$(YELLOW)CUnit not found! Downloading and building...$(NC)"; \
+		mkdir -p $(ROOT_DIR)/lib && cd $(ROOT_DIR)/lib && \
+		wget https://sourceforge.net/projects/cunit/files/CUnit/2.1-3/CUnit-2.1-3.tar.bz2 && \
+		tar -xvf CUnit-2.1-3.tar.bz2 && mv CUnit-2.1-3 cunit && rm CUnit-2.1-3.tar.bz2; \
+	fi
+	@echo "$(YELLOW)Building CUnit...$(NC)"
+	@cd $(CUNIT_DIRECTORY) && autoreconf -fi && ./configure --prefix=$(CUNIT_DIRECTORY) && make && make install
+	@echo "$(GREEN)CUnit compiled and installed$(NC)"
+
+$(NAME): $(OBJECTS) $(LIBFT)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJECTS) $(LIBFT) -lreadline
+	@echo "$(GREEN)$(NAME) generated$(NC)"
+
+$(OBJECTS_DIRECTORY)/%.o: $(SOURCES_DIRECTORY)/%.c $(HEADERS) | $(OBJECTS_DIRECTORY)
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJECTS_DIRECTORY):
+	@mkdir -p $(OBJECTS_DIRECTORY)
+
+$(TEST_EXEC): $(filter-out $(OBJECTS_DIRECTORY)/main.o, $(OBJECTS)) $(TEST_OBJECTS) $(LIBFT)
+	@$(CC) $(TEST_OBJECTS) $(filter-out $(OBJECTS_DIRECTORY)/main.o, $(OBJECTS)) $(CUNIT_LIB) -o $(TEST_EXEC) -Wl,--gc-sections
+
+$(OBJECTS_DIRECTORY)/test/%.o: test/%.c $(HEADERS) $(TEST_HEADER) | $(OBJECTS_DIRECTORY)/test
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJECTS_DIRECTORY)/test:
+	@mkdir -p $(OBJECTS_DIRECTORY)/test
 
 $(LIBFT):
-	make -C ./libft --no-print-directory
-	make bonus -C ./libft --no-print-directory
-	echo "libft compiled"
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@make -C ./libft --no-print-directory
+	@make bonus -C ./libft --no-print-directory
+	@echo "$(GREEN)Libft compiled$(NC)"
 
 clean:
-	make clean -C ./libft --no-print-directory
-	rm -f $(OBJ)
-	echo "object files deleted"
+	@rm -rf $(OBJECTS_DIRECTORY)
+	@make -s -C $(LIBFT_DIRECTORY) fclean >/dev/null 2>&1
+	@rm -rf $(CUNIT_DIRECTORY) clean >/dev/null 2>&1
+	@rm -f $(TEST_EXEC)
 
 fclean: clean
-	make fclean -C ./libft --no-print-directory
-	rm -f $(NAME)
-	echo "$(NAME) deleted"
+	@rm -f $(NAME)
 
 re: fclean all
+
+test: $(CUNIT) $(TEST_EXEC)
+	@echo "$(GREEN)Running tests...$(NC)"
+	@export LD_LIBRARY_PATH=$(CUNIT_DIRECTORY)/lib:$$LD_LIBRARY_PATH && ./$(TEST_EXEC)
 
 .PHONY: all clean fclean re
 
