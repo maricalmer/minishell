@@ -41,5 +41,4 @@ jobs:
       
       - name: Run tests
         run: |
-          make fclean
-          make test 
+          ./build/tests/test_binary
