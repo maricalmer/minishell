@@ -43,4 +43,4 @@ jobs:
         run: |
           make test
           chmod +x ./test_runner
-          ./test_runner
+          ./test_runner 2> /dev/null | grep -E '^(Suite:|  Test:|Run Summary:|[[:space:]]+suites|[[:space:]]+tests|[[:space:]]+asserts|Elapsed time)'
