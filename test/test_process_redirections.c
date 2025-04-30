@@ -12,24 +12,6 @@
 
 #include "test.h"
 
-t_minishell shell;
-static jmp_buf env;
-
-static void setup_shell_env(void) {
-    shell.last_exit_status = 0;
-    shell.gc_head = NULL;
-    shell.tokens = NULL;
-    shell.ast_root = NULL;
-    shell.cmd = NULL;
-    shell.heredocs = NULL;
-    shell.sigint_heredocs = 0;
-    shell.env = (char *[]){"PATH=/bin:/usr/bin", NULL};
-}
-
-void catch_exit(int status) {
-    longjmp(env, status);
-}
-
 // Test for get_last_file function
 void test_get_last_file(void) {
     t_files file1 = { .fd = 1, .next = NULL };
