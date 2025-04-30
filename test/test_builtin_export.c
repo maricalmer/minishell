@@ -22,7 +22,7 @@ void test_builtin_export_without_args(void)
 {
     t_minishell shell;
 
-    init_shell_mock(&shell);
+    //init_shell_mock(&shell);
     char *args[] = { "export", NULL };
     
     // Mock the print_export_without_args function
