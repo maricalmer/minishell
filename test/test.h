@@ -32,5 +32,6 @@ int         add_env_utils_tests(void);
 int         add_command_files_tests(void);
 int         add_command_heredoc_tests(void);
 int         add_command_init_tests(void);
+int         add_path_builder_tests(void);
 
 #endif

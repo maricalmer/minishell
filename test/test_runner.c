@@ -28,7 +28,8 @@ int	main(void)
 			|| add_env_utils_tests() != CUE_SUCCESS
 			|| add_command_files_tests() != CUE_SUCCESS
 			|| add_command_heredoc_tests() != CUE_SUCCESS
-			|| add_command_init_tests() != CUE_SUCCESS)
+			|| add_command_init_tests() != CUE_SUCCESS
+			|| add_path_builder_tests() != CUE_SUCCESS)
 	{
 		CU_cleanup_registry();
 		return (CU_get_error());
