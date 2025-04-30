@@ -31,5 +31,6 @@ int         add_variable_expansion_tests(void);
 int         add_env_utils_tests(void);
 int         add_command_files_tests(void);
 int         add_command_heredoc_tests(void);
+int         add_command_init_tests(void);
 
 #endif
