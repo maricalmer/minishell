@@ -62,6 +62,8 @@ void	test_get_current_directory(void)
 void test_get_target_path(void)
 {
 	t_minishell shell;
+
+	init_shell_mock(&shell);
 	char *path = NULL;
 
 	char *args_no_arg[] = { "cd", NULL };
@@ -87,6 +89,8 @@ void test_change_directory(void)
 void test_update_environment_mocked(void)
 {
 	t_minishell shell;
+
+
 	char oldpwd[PATH_MAX] = "/mock/oldpwd";
 	int result = update_environment_mock(oldpwd, &shell);
 	CU_ASSERT_EQUAL(result, 0);
@@ -94,8 +98,7 @@ void test_update_environment_mocked(void)
 
 void test_builtin_cd(void)
 {
-	t_minishell shell;
-
+	t_minishell shell = create_mock_shell(42, 0);
 	init_shell_mock(&shell);
 	char *args_no_arg[] = { "cd", NULL };
 	char *args_path[] = { "cd", "/tmp", NULL };

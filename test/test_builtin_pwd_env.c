@@ -31,7 +31,7 @@ void test_builtin_pwd(void)
 void test_builtin_env(void)
 {
     t_command cmd;
-    t_minishell shell;
+    t_minishell shell = create_mock_shell(42, 0);
     char *env_vars[] = {"VAR1=value1", "VAR2=value2", NULL};
     shell.env = env_vars;  // Mock environment variables
 
