@@ -35,7 +35,7 @@ int unset_env_variable_mock(const char *name, t_minishell *shell)
 
 void test_builtin_unset_valid(void)
 {
-    t_minishell shell;
+    t_minishell shell = create_mock_shell(42, 0);
     char *env_vars[] = {"VAR1=value1", "VAR2=value2", NULL};
     shell.env = env_vars;
 
@@ -50,7 +50,7 @@ void test_builtin_unset_valid(void)
 
 void test_builtin_unset_invalid_name(void)
 {
-    t_minishell shell;
+    t_minishell shell = create_mock_shell(42, 0);
     char *env_vars[] = {"VAR1=value1", "VAR2=value2", NULL};
     shell.env = env_vars;
 
@@ -63,7 +63,7 @@ void test_builtin_unset_invalid_name(void)
 
 void test_process_unset_argument_valid(void)
 {
-    t_minishell shell;
+    t_minishell shell = create_mock_shell(42, 0);
     char *env_vars[] = {"VAR1=value1", "VAR2=value2", NULL};
     shell.env = env_vars;
 
@@ -76,7 +76,7 @@ void test_process_unset_argument_valid(void)
 
 void test_process_unset_argument_invalid(void)
 {
-    t_minishell shell;
+    t_minishell shell = create_mock_shell(42, 0);
     char *env_vars[] = {"VAR1=value1", "VAR2=value2", NULL};
     shell.env = env_vars;
 
@@ -102,7 +102,7 @@ void test_is_valid_env_name_invalid(void)
 
 void test_find_env_index(void)
 {
-    t_minishell shell;
+    t_minishell shell = create_mock_shell(42, 0);
     char *env_vars[] = {"VAR1=value1", "VAR2=value2", NULL};
     shell.env = env_vars;
 
@@ -120,7 +120,7 @@ void test_find_env_index(void)
 
 void test_unset_env_variable(void)
 {
-    t_minishell shell;
+    t_minishell shell = create_mock_shell(42, 0);
     char *env_vars[] = {"VAR1=value1", "VAR2=value2", NULL};
     shell.env = env_vars;
 

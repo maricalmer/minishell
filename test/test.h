@@ -20,6 +20,7 @@
 
 
 void    init_shell_mock(t_minishell *shell);
+t_minishell create_mock_shell(int last_status, int in_pipe);
 int		add_builtin_cd_tests(void);
 int		add_builtin_echo_tests(void);
 int		add_builtin_exit_tests(void);
