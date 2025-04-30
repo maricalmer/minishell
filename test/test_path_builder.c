@@ -20,7 +20,7 @@ char *env_with_path[] = {
     NULL
 };
 
-void setup_shell_env(void) {
+static void setup_shell_env(void) {
     shell.gc_head = NULL; // Or use mock GC manager
     shell.env = env_with_path;
 }

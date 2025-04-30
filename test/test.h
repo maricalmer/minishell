@@ -33,5 +33,6 @@ int         add_command_files_tests(void);
 int         add_command_heredoc_tests(void);
 int         add_command_init_tests(void);
 int         add_path_builder_tests(void);
+int         add_process_redirections_tests(void);
 
 #endif
