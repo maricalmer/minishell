@@ -99,7 +99,7 @@ void test_handle_variable_expansion_valid(void) {
 
 int add_variable_expansion_tests(void)
 {
-    CU_pSuite suite = CU_add_suite("builtin_export", 0, 0);
+    CU_pSuite suite = CU_add_suite("var_expansion", 0, 0);
     
     if (!suite)
         return (1);

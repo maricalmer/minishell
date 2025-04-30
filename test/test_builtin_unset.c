@@ -136,7 +136,7 @@ void test_unset_env_variable(void)
 
 int add_builtin_unset_tests(void)
 {
-    CU_pSuite suite = CU_add_suite("builtin_export", 0, 0);
+    CU_pSuite suite = CU_add_suite("builtin_unset", 0, 0);
     
     if (!suite)
         return (1);

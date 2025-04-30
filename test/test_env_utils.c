@@ -83,7 +83,7 @@ void test_set_env_variable_override(void)
 
 int add_env_utils_tests(void)
 {
-    CU_pSuite suite = CU_add_suite("builtin_export", 0, 0);
+    CU_pSuite suite = CU_add_suite("env_utils", 0, 0);
     
     if (!suite)
         return (1);

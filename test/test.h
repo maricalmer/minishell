@@ -29,5 +29,6 @@ int		    add_builtin_pwd_env_tests(void);
 int         add_builtin_unset_tests(void);
 int         add_variable_expansion_tests(void);
 int         add_env_utils_tests(void);
+int         add_command_files_tests(void);
 
 #endif

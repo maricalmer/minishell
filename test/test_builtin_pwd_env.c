@@ -78,7 +78,7 @@ void test_cd_too_many_arguments(void)
 
 int add_builtin_pwd_env_tests(void)
 {
-    CU_pSuite suite = CU_add_suite("builtin_export", 0, 0);
+    CU_pSuite suite = CU_add_suite("builtin_pwd_env", 0, 0);
     
     if (!suite)
         return (1);
