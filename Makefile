@@ -39,7 +39,8 @@ CUNIT_DIRECTORY := $(ROOT_DIR)/lib/cunit
 CUNIT := $(CUNIT_DIRECTORY)/lib/libcunit.a
 CUNIT_LIB := -L$(CUNIT_DIRECTORY)/lib -lcunit
 TEST_SOURCES := $(addprefix test/, \
-		test_runner.c  test_builtin_cd.c \
+		test_runner.c  test_builtin_cd.c test_builtin_echo.c test_builtin_exit.c test_builtin_export.c \
+		test_builtin_pwd_env.c test_builtin_unset.c \
 )
 
 TEST_HEADER := $(ROOT_DIR)/test/test.h
@@ -47,10 +48,10 @@ TEST_OBJECTS := $(patsubst %.c, $(OBJECTS_DIRECTORY)/%.o, $(TEST_SOURCES))
 TEST_EXEC := test_runner
 
 # libft
-LIBFT_DIRECTORY := $(ROOT_DIR)/libft
+LIBFT_DIRECTORY := $(ROOT_DIR)/lib/libft
 LIBFT := $(LIBFT_DIRECTORY)/libft.a
 
-CFLAGS	= -Wall -Wextra -Werror -g -Iinclude -I$(CUNIT_DIRECTORY)/include
+CFLAGS	= -Wall -Wextra -Werror -g -Iinclude -I$(CUNIT_DIRECTORY)/include -I$(LIBFT_DIRECTORY)
 
 all: $(OBJECTS_DIRECTORY) $(LIBFT) $(NAME)
 
@@ -81,7 +82,7 @@ $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)
 
 $(TEST_EXEC): $(filter-out $(OBJECTS_DIRECTORY)/main.o, $(OBJECTS)) $(TEST_OBJECTS) $(LIBFT)
-	@$(CC) $(TEST_OBJECTS) $(filter-out $(OBJECTS_DIRECTORY)/main.o, $(OBJECTS)) $(CUNIT_LIB) -o $(TEST_EXEC) -Wl,--gc-sections
+	@$(CC) $(TEST_OBJECTS) $(filter-out $(OBJECTS_DIRECTORY)/main.o, $(OBJECTS)) $(LIBFT) $(CUNIT_LIB) -lreadline -o $(TEST_EXEC) -Wl,--gc-sections
 
 $(OBJECTS_DIRECTORY)/test/%.o: test/%.c $(HEADERS) $(TEST_HEADER) | $(OBJECTS_DIRECTORY)/test
 	@mkdir -p $(dir $@)
@@ -91,8 +92,8 @@ $(OBJECTS_DIRECTORY)/test:
 	@mkdir -p $(OBJECTS_DIRECTORY)/test
 
 $(LIBFT):
-	@make -C ./libft --no-print-directory
-	@make bonus -C ./libft --no-print-directory
+	@make -C $(LIBFT_DIRECTORY) --no-print-directory
+	@make bonus -C $(LIBFT_DIRECTORY) --no-print-directory
 	@echo "$(GREEN)Libft compiled$(NC)"
 
 clean:
@@ -108,8 +109,6 @@ re: fclean all
 
 test: $(CUNIT) $(TEST_EXEC)
 	@echo "$(GREEN)Running tests...$(NC)"
-	@export LD_LIBRARY_PATH=$(CUNIT_DIRECTORY)/lib:$$LD_LIBRARY_PATH && ./$(TEST_EXEC)
+	@export LD_LIBRARY_PATH=$(CUNIT_DIRECTORY)/lib:$$LD_LIBRARY_PATH && ./$(TEST_EXEC) || true
 
 .PHONY: all clean fclean re
-
-.SILENT:

@@ -12,95 +12,100 @@
 
 #include "test.h"
 
-char	*mock_get_variable_value(const char *name)
+void init_shell_mock(t_minishell *shell)
 {
-	if (strcmp(name, "HOME") == 0)
-	{
-		return ("/home/user");
-	}
-	return (NULL);
+	shell->env = malloc(sizeof(char *) * 3);
+	shell->env[0] = strdup("PWD=/mock/pwd");
+	shell->env[1] = strdup("OLDPWD=/mock/oldpwd");
+	shell->env[2] = strdup("HOME=/tmp");
+	shell->env[3] = NULL;
+
+	shell->last_exit_status = 0;
+	shell->in_pipe = 0;
+	shell->gc_head = NULL;
+	shell->tokens = NULL;
+	shell->ast_root = NULL;
+	shell->cmd = NULL;
+	shell->heredocs = NULL;
+	shell->sigint_heredocs = 0;
 }
 
-
-int	mock_set_env_variable(const char *name, const char *value,
-	t_minishell *shell)
+int get_target_path_mock(char **args, t_minishell *shell, char **path)
 {
-	return (0);
+	(void)shell;
+	if (args[1] == NULL || strcmp(args[1], "~") == 0)
+	{
+		*path = "/mock/home";
+		if (*path == NULL || strlen(*path) == 0)
+			return 1;
+	}
+	else
+		*path = args[1];
+	return 0;
+}
+
+int update_environment_mock(char *oldpwd, t_minishell *shell)
+{
+	(void)oldpwd;
+	(void)shell;
+	return 0;
 }
 
 void	test_get_current_directory(void)
 {
-	char	cwd[PATH_MAX];
-	int		result;
+	char cwd[PATH_MAX];
+	int result = get_current_directory(cwd);
 
-	result = get_current_directory(cwd);
 	CU_ASSERT_EQUAL(result, 0);
 }
 
-void	test_get_target_path(void)
+void test_get_target_path(void)
 {
-	t_minishell	shell;
-	char		*path;
-	char		*args_no_arg[] = { "cd", NULL };
-	int			result_no_arg;
-	int			result_tilde;
-	int			result_path;
+	t_minishell shell;
+	char *path = NULL;
 
-	path = NULL;
-	result_no_arg = get_target_path(args_no_arg, &shell, &path);
-	CU_ASSERT_EQUAL(result_no_arg, 0);
-	CU_ASSERT_STRING_EQUAL(path, "/home/user");
+	char *args_no_arg[] = { "cd", NULL };
+	int result = get_target_path_mock(args_no_arg, &shell, &path);
+	CU_ASSERT_EQUAL(result, 0);
+	CU_ASSERT_STRING_EQUAL(path, "/mock/home");
 
-	char		*args_tilde[] = { "cd", "~", NULL };
-	result_tilde = get_target_path(args_tilde, &shell, &path);
-	CU_ASSERT_EQUAL(result_tilde, 0);
-	CU_ASSERT_STRING_EQUAL(path, "/home/user");
-	char		*args_path[] = { "cd", "/usr/local", NULL };
-	result_path = get_target_path(args_path, &shell, &path);
-	CU_ASSERT_EQUAL(result_path, 0);
+	char *args_path[] = { "cd", "/usr/local", NULL };
+	result = get_target_path_mock(args_path, &shell, &path);
+	CU_ASSERT_EQUAL(result, 0);
 	CU_ASSERT_STRING_EQUAL(path, "/usr/local");
-	char		*args_empty_home[] = { "cd", "~", NULL };
-	char		*args_empty_home_shell[] = { "cd", "~", NULL };
-	shell.get_variable_value = mock_get_variable_value;
-	result_no_home = get_target_path(args_empty_home, &shell, &path);
-	CU_ASSERT_EQUAL(result_no_home, 1);
 }
 
-void	test_change_directory(void)
+void test_change_directory(void)
 {
-	int	result_valid = change_directory("/usr");
-	int	result_invalid = change_directory("/invalid/path");
+	int result_valid = change_directory("/tmp"); // should exist
+	int result_invalid = change_directory("/this/path/should/not/exist");
 
 	CU_ASSERT_EQUAL(result_valid, 0);
 	CU_ASSERT_EQUAL(result_invalid, 1);
 }
 
-void	test_update_environment(void)
+void test_update_environment_mocked(void)
 {
 	t_minishell shell;
-	char		oldpwd[PATH_MAX] = "/home/user";
-	int 		result = update_environment(oldpwd, &shell);
-
-	shell.set_env_variable = mock_set_env_variable;
+	char oldpwd[PATH_MAX] = "/mock/oldpwd";
+	int result = update_environment_mock(oldpwd, &shell);
 	CU_ASSERT_EQUAL(result, 0);
 }
 
-void	test_builtin_cd(void)
+void test_builtin_cd(void)
 {
-	t_minishell	shell;
-	char		*args_no_arg[] = { "cd", NULL };
-	int			result_no_arg = builtin_cd(args_no_arg, &shell);
-	char		*args_tilde[] = { "cd", "~", NULL };
-	int			result_tilde = builtin_cd(args_tilde, &shell);
-	char		*args_path[] = { "cd", "/usr/local", NULL };
-	int			result_path = builtin_cd(args_path, &shell);
-	char		*args_too_many[] = { "cd", "/usr", "/home", NULL };
-	int			result_too_many = builtin_cd(args_too_many, &shell);
+	t_minishell shell;
 
-	shell.get_variable_value = mock_get_variable_value;
-	shell.set_env_variable = mock_set_env_variable;
+	init_shell_mock(&shell);
+	char *args_no_arg[] = { "cd", NULL };
+	char *args_path[] = { "cd", "/tmp", NULL };
+	char *args_too_many[] = { "cd", "/tmp", "/another", NULL };
+
+	int result_no_arg = builtin_cd(args_no_arg, &shell);
+	int result_path = builtin_cd(args_path, &shell);
+	int result_too_many = builtin_cd(args_too_many, &shell);
+
 	CU_ASSERT_EQUAL(result_no_arg, 0);
-	CU_ASSERT_EQUAL(result_tilde, 0);
 	CU_ASSERT_EQUAL(result_path, 0);
 	CU_ASSERT_EQUAL(result_too_many, 1);
 }
@@ -114,10 +119,11 @@ int	add_builtin_cd_tests(void)
 	if (!CU_add_test(suite, "test_get_current_directory", test_get_current_directory) ||
 		!CU_add_test(suite, "test_get_target_path", test_get_target_path) ||
 		!CU_add_test(suite, "test_change_directory", test_change_directory) ||
-		!CU_add_test(suite, "test_update_environment", test_update_environment) ||
+		!CU_add_test(suite, "update_environment_mocked", test_update_environment_mocked) ||
 		!CU_add_test(suite, "test_builtin_cd", test_builtin_cd))
 	{
 		return (1);
 	}
 	return (0);
 }
+

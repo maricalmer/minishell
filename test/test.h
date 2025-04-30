@@ -18,6 +18,13 @@
 # include <locale.h>
 # include "minishell.h"
 
+
+void    init_shell_mock(t_minishell *shell);
 int		add_builtin_cd_tests(void);
+int		add_builtin_echo_tests(void);
+int		add_builtin_exit_tests(void);
+int		add_builtin_export_tests(void);
+int		add_builtin_pwd_env_tests(void);
+int     add_builtin_unset_tests(void);
 
 #endif

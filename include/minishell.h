@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 /* libraries */
-# include "../libft/libft.h"
+# include "../lib/libft/libft.h"
 /* printf, perror */
 # include <stdio.h>
 /* malloc, free, exit, getenv */

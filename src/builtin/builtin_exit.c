@@ -112,8 +112,12 @@ int	is_numeric_argument(const char *arg)
 	int	i;
 
 	i = 0;
+	if (!arg)
+		return (0);
 	if (arg[0] == '-' || arg[0] == '+')
 		i++;
+	if (arg[i] == '\0')
+		return (0);
 	while (arg[i])
 	{
 		if (!ft_isdigit(arg[i]))

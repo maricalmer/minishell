@@ -19,7 +19,11 @@ int	main(void)
 	setlocale(LC_NUMERIC, "C");
 	if (CU_initialize_registry() != CUE_SUCCESS)
 		return (CU_get_error());
-	if (add_builtin_cd_tests() != CUE_SUCCESS)
+	if (add_builtin_cd_tests() != CUE_SUCCESS
+			|| add_builtin_echo_tests() != CUE_SUCCESS
+			|| add_builtin_exit_tests() != CUE_SUCCESS
+			|| add_builtin_export_tests() != CUE_SUCCESS
+			|| add_builtin_pwd_env_tests() != CUE_SUCCESS)
 	{
 		CU_cleanup_registry();
 		return (CU_get_error());
