@@ -1,0 +1,44 @@
+name: CUnit Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            libcunit1 \
+            libcunit1-dev \
+            make \
+            wget \
+            tar \
+            autoconf \
+            git \
+            libbsd-dev
+
+      - name: Compile Libft
+        run: |
+          if [ ! -d "lib/libft" ]; then
+            git clone https://github.com/42Paris/libft lib/libft
+          fi
+          cd lib/libft
+          make
+      
+      - name: Run tests
+        run: |
+          make fclean
+          make test 
