@@ -23,6 +23,7 @@ jobs:
             build-essential \
             libcunit1 \
             libcunit1-dev \
+            libreadline-dev \
             make \
             wget \
             tar \
