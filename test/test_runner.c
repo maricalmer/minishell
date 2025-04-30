@@ -23,7 +23,9 @@ int	main(void)
 			|| add_builtin_echo_tests() != CUE_SUCCESS
 			|| add_builtin_exit_tests() != CUE_SUCCESS
 			|| add_builtin_export_tests() != CUE_SUCCESS
-			|| add_builtin_pwd_env_tests() != CUE_SUCCESS)
+			|| add_builtin_pwd_env_tests() != CUE_SUCCESS
+			|| add_variable_expansion_tests() != CUE_SUCCESS
+			|| add_env_utils_tests() != CUE_SUCCESS)
 	{
 		CU_cleanup_registry();
 		return (CU_get_error());

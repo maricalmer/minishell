@@ -40,7 +40,7 @@ CUNIT := $(CUNIT_DIRECTORY)/lib/libcunit.a
 CUNIT_LIB := -L$(CUNIT_DIRECTORY)/lib -lcunit
 TEST_SOURCES := $(addprefix test/, \
 		test_runner.c  test_builtin_cd.c test_builtin_echo.c test_builtin_exit.c test_builtin_export.c \
-		test_builtin_pwd_env.c test_builtin_unset.c \
+		test_builtin_pwd_env.c test_builtin_unset.c test_variable_expansion.c test_env_utils.c \
 )
 
 TEST_HEADER := $(ROOT_DIR)/test/test.h
