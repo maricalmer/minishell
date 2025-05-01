@@ -30,7 +30,13 @@ int	main(void)
 			|| add_command_heredoc_tests() != CUE_SUCCESS
 			|| add_command_init_tests() != CUE_SUCCESS
 			|| add_path_builder_tests() != CUE_SUCCESS
-			|| add_process_redirections_tests() != CUE_SUCCESS)
+			|| add_process_redirections_tests() != CUE_SUCCESS
+			|| add_lexer_assign_type_tests() != CUE_SUCCESS
+			|| add_lexer_main_tests() != CUE_SUCCESS
+			|| add_lexer_process_tests() != CUE_SUCCESS
+			|| add_lexer_state_handler_tests() != CUE_SUCCESS
+			|| add_lexer_state_utils_tests() != CUE_SUCCESS
+			|| add_lexer_token_tests() != CUE_SUCCESS)
 	{
 		CU_cleanup_registry();
 		return (CU_get_error());

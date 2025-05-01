@@ -34,5 +34,11 @@ int         add_command_heredoc_tests(void);
 int         add_command_init_tests(void);
 int         add_path_builder_tests(void);
 int         add_process_redirections_tests(void);
+int         add_lexer_assign_type_tests(void);
+int         add_lexer_main_tests(void);
+int         add_lexer_process_tests(void);
+int         add_lexer_state_handler_tests(void);
+int         add_lexer_state_utils_tests(void);
+int         add_lexer_token_tests(void);
 
 #endif
