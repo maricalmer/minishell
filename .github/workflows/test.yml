@@ -38,6 +38,7 @@ jobs:
           fi
           cd lib/libft
           make
+          make bonus
       
       - name: Run tests
         run: |
