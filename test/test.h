@@ -40,5 +40,9 @@ int         add_lexer_process_tests(void);
 int         add_lexer_state_handler_tests(void);
 int         add_lexer_state_utils_tests(void);
 int         add_lexer_token_tests(void);
+int         add_heredoc_cleanup_tests(void);
+int         add_heredoc_creation_tests(void);
+int         add_heredoc_handler_tests(void);
+int         add_heredoc_loop_tests(void);
 
 #endif

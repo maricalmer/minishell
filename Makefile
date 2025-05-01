@@ -43,7 +43,8 @@ TEST_SOURCES := $(addprefix test/, \
 		test_builtin_pwd_env.c test_builtin_unset.c test_variable_expansion.c test_env_utils.c \
 		test_command_files.c test_command_heredoc.c test_command_init.c test_path_builder.c  \
 		test_process_redirections.c test_lexer_assign_type.c test_lexer_main.c test_lexer_process.c \
-		test_lexer_state_handler.c test_lexer_state_utils.c test_lexer_token.c \
+		test_lexer_state_handler.c test_lexer_state_utils.c test_lexer_token.c test_heredoc_cleanup.c \
+		test_heredoc_creation.c test_heredoc_handler.c test_heredoc_loop.c \
 )
 
 TEST_HEADER := $(ROOT_DIR)/test/test.h

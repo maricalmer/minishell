@@ -36,7 +36,11 @@ int	main(void)
 			|| add_lexer_process_tests() != CUE_SUCCESS
 			|| add_lexer_state_handler_tests() != CUE_SUCCESS
 			|| add_lexer_state_utils_tests() != CUE_SUCCESS
-			|| add_lexer_token_tests() != CUE_SUCCESS)
+			|| add_lexer_token_tests() != CUE_SUCCESS
+			|| add_heredoc_cleanup_tests() != CUE_SUCCESS
+			|| add_heredoc_creation_tests() != CUE_SUCCESS
+			|| add_heredoc_handler_tests() != CUE_SUCCESS
+			|| add_heredoc_loop_tests() != CUE_SUCCESS)
 	{
 		CU_cleanup_registry();
 		return (CU_get_error());
