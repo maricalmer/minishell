@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 05:40:19 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/05 22:56:49 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles the main input loop for the shell.                                 */
+/*  - Rejects command-line arguments and exits if any are given.              */
+/*  - Reads user input, checks for signals, and handles edge cases.           */
+/*  - Skips empty or syntactically incorrect commands.                        */
+/*  - Processes valid input through lexing, parsing, and execution.           */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 void	main_input_loop(int ac, char **av, t_minishell *shell)
 {
