@@ -3,16 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   delimiter_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 18:16:30 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 06:10:40 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:02:40 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Utility functions for handling delimiters during input parsing.            */
+/*  - Validates placement of left and right delimiter characters.             */
+/*  - Processes characters based on quoting context and syntax rules.         */
+/*  - Handles logical operators (|, &&) and grouping symbols.                 */
+/*  - Assists in identifying syntax errors related to shell expression flow.  */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* check if left delimiter is valid */
+#include "minishell.h"
+
 int	check_left_char(const char *str)
 {
 	if (*str == '|')
@@ -22,7 +31,6 @@ int	check_left_char(const char *str)
 	return (1);
 }
 
-/* check if right delimiter end is correct */
 int	check_right_end(const char *last_valid, int offset)
 {
 	const char	*check_pos;

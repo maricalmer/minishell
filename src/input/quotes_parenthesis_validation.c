@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parenthesis_validation.c                           :+:      :+:    :+:   */
+/*   quotes_parenthesis_validation.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 18:19:03 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/18 00:12:47 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/05 23:05:28 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Validates correct use of quotes and parentheses in shell input.            */
+/*  - Ensures quotes are properly balanced and not mismatched.                */
+/*  - Checks that parentheses are opened and closed in valid positions.       */
+/*  - Ignores characters inside quotes to avoid false positives.              */
+/*  - Prevents syntax errors related to grouping and command structure.       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 int	validate_balanced_quotes(const char *str)
 {

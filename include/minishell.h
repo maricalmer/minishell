@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/18 19:19:55 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:05:49 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ int							check_closing(const char **str);
 int							check_empty_parenthesis(const char **str);
 int							validate_no_empty_parenthesis(const char *str);
 
-/* parenthesis_validation.c */
+/* quotes_parenthesis_validation.c */
 int							validate_balanced_quotes(const char *str);
 int							validate_balanced_parenthesis(const char *str);
 int							validate_opening_parenthesis(const char *str);
