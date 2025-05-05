@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_validation.c                                :+:      :+:    :+:   */
+/*   input_syntax_checker.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:29:20 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/18 14:09:15 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/05 23:20:36 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Utility functions for syntax validation of shell input.                    */
+/*  - Skips whitespace and identifies operators like | and &&.                */
+/*  - Validates correct use of pipe and AND operators in the middle of input. */
+/*  - Ensures heredoc and control characters follow expected syntax.          */
+/*  - Supports higher-level parsing logic with structural helpers.            */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 int	handle_syntax_error(char *input, t_minishell *shell)
 {

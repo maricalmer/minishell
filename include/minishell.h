@@ -6,7 +6,7 @@
 /*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2025/05/05 23:05:49 by maricalmer       ###   ########.fr       */
+/*   Updated: 2025/05/05 23:21:08 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ int							handle_empty_input(char *input);
 void						process_valid_input(char *input,
 								t_minishell *shell);
 
-/* syntax_validation.c */
+/* input_syntax_checker.c */
 int							handle_syntax_error(char *input,
 								t_minishell *shell);
 int							validate_heredoc_delimiter(char *str);
@@ -183,7 +183,7 @@ int							validate_delimiter_right(const char *str);
 int							validate_delimiter_middle(const char *str);
 int							validate_balanced_quotes(const char *str);
 
-/* syntax_validation_utils.c */
+/* operator_syntax.c */
 char						*skip_whitespace_input(char *str);
 const char					*skip_operator_right(const char *str,
 								const char **last_valid, int *offset);
@@ -200,7 +200,7 @@ const char					*process_opening_char(const char *str,
 								int *in_quotes, char *quote_char,
 								char *prev_char);
 
-/* quotes_handler.c */
+/* grouping_syntax.c */
 int							handle_quotes(char *str, int *in_quotes,
 								char *quote_char);
 int							valid_open_prevchar(char prev_char);
@@ -208,7 +208,7 @@ int							check_closing(const char **str);
 int							check_empty_parenthesis(const char **str);
 int							validate_no_empty_parenthesis(const char *str);
 
-/* quotes_parenthesis_validation.c */
+/* grouping_validation.c */
 int							validate_balanced_quotes(const char *str);
 int							validate_balanced_parenthesis(const char *str);
 int							validate_opening_parenthesis(const char *str);

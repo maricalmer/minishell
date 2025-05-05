@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes_handler.c                                   :+:      :+:    :+:   */
+/*   grouping_syntax.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 18:10:19 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/18 00:10:19 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/05 23:18:02 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles quote and parenthesis-related parsing rules in shell input.        */
+/*  - Tracks and updates quote states for proper grouping.                    */
+/*  - Validates characters before opening parentheses.                        */
+/*  - Ensures closing parentheses follow valid syntax.                        */
+/*  - Detects and rejects empty or invalid parenthesis usage.                 */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* handle entering and leaving quotes; return 1 if quote handled, 0 otherwise */
+#include "minishell.h"
+
 int	handle_quotes(char *str, int *in_quotes, char *quote_char)
 {
 	if (!*in_quotes && (*str == '\'' || *str == '"'))
@@ -30,14 +39,12 @@ int	handle_quotes(char *str, int *in_quotes, char *quote_char)
 	return (0);
 }
 
-/* Validate that before '(' is valid or '(' itself */
 int	valid_open_prevchar(char prev_char)
 {
 	return (prev_char == '\0' || prev_char == '|' || prev_char == '&'
 		|| prev_char == '(');
 }
 
-/* Check closing parenthesis validity */
 int	check_closing(const char **str)
 {
 	(*str)++;
@@ -48,7 +55,6 @@ int	check_closing(const char **str)
 	return (1);
 }
 
-/* Check no-empty-parenthesis helper */
 int	check_empty_parenthesis(const char **str)
 {
 	(*str)++;

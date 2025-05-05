@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_validation_utils.c                          :+:      :+:    :+:   */
+/*   operator_syntax.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 16:09:33 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/14 19:07:50 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/05 23:16:47 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Utility functions for syntax validation of shell input.                    */
+/*  - Skips whitespace and identifies operators like | and &&.                */
+/*  - Validates correct use of pipe and AND operators in the middle of input. */
+/*  - Ensures heredoc and control characters follow expected syntax.          */
+/*  - Supports higher-level parsing logic with structural helpers.            */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 char	*skip_whitespace_input(char *str)
 {

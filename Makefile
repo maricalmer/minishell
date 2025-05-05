@@ -14,9 +14,9 @@ OBJECTS_DIRECTORY := $(ROOT_DIR)/build
 SOURCES		:= $(addprefix $(SOURCES_DIRECTORY)/,\
 			main.c \
 			$(addprefix environment/, environment_utils.c variable_expansion.c) \
-			$(addprefix input/, input_handling.c syntax_validation.c \
-				syntax_validation_utils.c delimiter_utils.c quotes_handler.c \
-				quotes_parenthesis_validation.c) \
+			$(addprefix input/, input_handling.c input_syntax_checker.c \
+				operator_syntax.c delimiter_utils.c grouping_syntax.c \
+				grouping_validation.c) \
 			$(addprefix lexer/, lexer_main.c lexer_process.c lexer_assign_types.c \
 				lexer_state_handler.c lexer_state_utils.c lexer_utils.c lexer_token.c) \
 			$(addprefix parser/, parser.c parser_utils.c heredoc_init.c \
