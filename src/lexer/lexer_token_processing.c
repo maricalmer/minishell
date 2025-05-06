@@ -68,6 +68,8 @@ int	count_remove_trailing_parenth(char *value)
 	if (!value)
 		return (0);
 	len = ft_strlen(value);
+	if (value[0] == '(' && value[len - 1] == ')')
+        return (0);
 	while (len > 0 && value[len - 1] == ')')
 	{
 		count++;

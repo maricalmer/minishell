@@ -10,7 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Closes and resets heredoc file descriptors to prevent leaks or reuse.      */
+/* `close_heredoc_list` handles rotation of the heredoc list after closing.   */
+/* `close_all_heredocs` walks through all heredoc entries and closes FDs.     */
+/* Ensures that invalid or already-closed descriptors are safely skipped.     */
+/* Includes a warning message for EOF before reaching the expected delimiter. */
+/* Helps maintain proper resource cleanup during heredoc handling.            */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 void	close_heredoc_list(t_minishell *shell)
 {

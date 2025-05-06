@@ -319,7 +319,7 @@ void						close_heredoc_list(t_minishell *shell);
 void						close_all_heredocs(t_minishell *shell);
 void						heredoc_warning_message(void);
 
-/* heredoc_handler.c */
+/* heredoc_parser.c */
 void						handle_heredoc_token_in_input(char **input,
 								t_minishell *shell, t_list **outer_list,
 								t_list **current_list);

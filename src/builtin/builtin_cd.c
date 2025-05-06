@@ -10,10 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Implements the `cd` builtin command, handling directory changes and        */
+/* updating environment variables (PWD, OLDPWD). Handles edge cases such as   */
+/* too many arguments or missing HOME variable. Internally manages cwd        */
+/* retrieval, argument parsing, directory switching, and env updates.         */
+/* Returns 0 on success, 1 on any error.                                      */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	change cwd based on provided args; handle cases with no args provided or
-	when argument is '~', directing the shell to the user's home directory */
+#include "minishell.h"
+
 int	builtin_cd(char **args, t_minishell *shell)
 {
 	int		status;
@@ -39,7 +47,6 @@ int	builtin_cd(char **args, t_minishell *shell)
 	return (0);
 }
 
-/* cwd: buffer to store current working directory */
 int	get_current_directory(char *cwd)
 {
 	if (getcwd(cwd, PATH_MAX) == NULL)
@@ -50,7 +57,6 @@ int	get_current_directory(char *cwd)
 	return (0);
 }
 
-/*	path: pointer to store the target path */
 int	get_target_path(char **args, t_minishell *shell, char **path)
 {
 	if (args[1] == NULL || ft_strncmp(args[1], "~", 2) == 0)
@@ -67,7 +73,6 @@ int	get_target_path(char **args, t_minishell *shell, char **path)
 	return (0);
 }
 
-/*	change cwd to target directory path */
 int	change_directory(char *path)
 {
 	if (chdir(path) != 0)
@@ -78,7 +83,6 @@ int	change_directory(char *path)
 	return (0);
 }
 
-/* update OLDPWD (previous working dir) & PWD env variables */
 int	update_environment(char *oldpwd, t_minishell *shell)
 {
 	char	cwd[PATH_MAX];

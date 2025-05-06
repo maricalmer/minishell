@@ -10,7 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Identifies and executes shell built-in commands such as cd, echo, export,  */
+/* and exit. It provides logic to route command execution and manage special  */
+/* behavior like redirection handling in echo. Also includes error utilities  */
+/* for built-in commands. Used to distinguish and run built-ins separately    */
+/* from external programs.                                                    */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 int	is_builtin_command(const char *word)
 {

@@ -10,9 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Implements the `exit` builtin command, handling optional numeric           */
+/* arguments, too many arguments, and non-numeric errors. If the input is     */
+/* valid, it exits the shell with the given status, cleaning up resources.    */
+/* Includes logic for quoted arguments, whitespace trimming, and special      */
+/* output behavior when not part of a pipeline. Returns status or error code. */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* main function to handle exit command */
+#include "minishell.h"
+
 int	handle_exit_command(char **args, t_minishell *shell)
 {
 	int		exit_status;
@@ -31,7 +40,6 @@ int	handle_exit_command(char **args, t_minishell *shell)
 	return (1);
 }
 
-/* handle exit command with arguments */
 int	handle_exit_with_arguments(char **args, t_minishell *shell)
 {
 	int	arg_count;
@@ -60,7 +68,6 @@ int	handle_exit_with_arguments(char **args, t_minishell *shell)
 	}
 }
 
-/* handle numeric argument for exit */
 int	handle_numeric_argument(char *arg, t_minishell *shell)
 {
 	char	*cleaned_arg;
@@ -106,7 +113,6 @@ char	*remove_surrounding_quotes(char *arg, t_minishell *shell)
 	return (gc_strdup(&shell->gc_head, arg));
 }
 
-/* check if a string represents a numeric argument */
 int	is_numeric_argument(const char *arg)
 {
 	int	i;

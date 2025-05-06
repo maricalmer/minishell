@@ -10,10 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Implements the `echo` builtin command, supporting multiple `-n` flags      */
+/* to suppress the trailing newline. Handles output redirection if specified  */
+/* in the command structure. Parses arguments and writes them to the proper   */
+/* file descriptor with appropriate spacing and newline logic. Always         */
+/* returns 0, as echo does not fail under normal conditions.                  */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	execute echo command with parsed flags and output
-	handle output redirection and print arguments accordingly */
+#include "minishell.h"
+
 int	builtin_echo(t_command *cmd)
 {
 	int		i;
@@ -33,8 +41,6 @@ int	builtin_echo(t_command *cmd)
 	return (0);
 }
 
-/*	parse echo flags to determine if newline should be suppressed
-	update index and newline flag based on parsed arguments */
 void	parse_echo_flags(char **args, int *i, int *newline)
 {
 	while (args[*i] && is_all_n_flag(args[*i]))
@@ -44,7 +50,6 @@ void	parse_echo_flags(char **args, int *i, int *newline)
 	}
 }
 
-/*	check if argument is a valid '-n' flag;	return 1 if valid, 0 if not */
 int	is_all_n_flag(char *arg)
 {
 	int	j;
@@ -59,8 +64,6 @@ int	is_all_n_flag(char *arg)
 	return (0);
 }
 
-/*	print command arguments to output file descriptor
-	append spaces between arguments and newline if required */
 void	print_arguments(char **args, int i, int newline, int output_fd)
 {
 	while (args[i])

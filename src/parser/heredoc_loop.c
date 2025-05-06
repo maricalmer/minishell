@@ -10,14 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Executes heredoc input collection in a child process using a pipe.         */
+/* Compares each line read from the user to the heredoc delimiter.            */
+/* Expands environment variables unless the delimiter is quoted.              */
+/* Handles memory cleanup, signal-safe exit, and writing to the heredoc pipe. */
+/* Supports both plain and quoted heredocs with proper delimiter checks.      */
+/* Gracefully terminates on EOF or delimiter match, printing warning if       */
+/* needed.                                                                    */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* "close_all_heredocs(shell);" after "close(pipe[1]);"? */
-		// if (g_received_signal == 2)
-		// {
-		// 	g_received_signal = 0;
-		// 	break ;
-		// }
+#include "minishell.h"
+
 void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
 		t_files *heredoc)
 {
@@ -60,7 +66,6 @@ int	is_heredoc_delimiter(const char *input, const char *delimiter)
 	return (0);
 }
 
-/* "ft_putchar_fd('\n', fd);" might be unnecessary? */
 void	catch_heredoc_input(t_minishell *shell, char *str, int fd,
 		t_files *heredoc)
 {

@@ -10,7 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Provides functions to allocate and manage heredoc file and list structures.*/
+/* Supports creation of heredoc file nodes with delimiter and quote metadata. */
+/* Builds nested linked lists to organize multiple heredocs per command.      */
+/* Includes utilities to append new file nodes or lists to existing chains.   */
+/* Uses garbage-collected allocations tied to the shell's memory context.     */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 t_files	*create_heredoc_file(char *delimiter, int is_quoted, t_minishell *shell)
 {

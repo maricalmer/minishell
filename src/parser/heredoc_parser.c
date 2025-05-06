@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_handler.c                                  :+:      :+:    :+:   */
+/*   heredoc_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Scans input to identify heredoc (`<<`) tokens and extract their delimiters.*/
+/* Handles quote detection for delimiters and organizes heredocs per command. */
+/* Maintains a nested list structure tracking heredocs across pipelines.      */
+/* Supports heredoc list resets on pipe or logical AND (`&&`) boundaries.     */
+/* Delegates heredoc file creation and list linking to utility functions.     */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 void	handle_heredoc_token_in_input(char **input, t_minishell *shell,
 		t_list **outer_list, t_list **current_list)

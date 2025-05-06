@@ -10,9 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles the `export` builtin command by setting or validating environment  */
+/* variables. Supports key-only exports and key=value pairs. If no arguments  */
+/* are passed, it prints the current environment in export format. Includes   */
+/* error handling for invalid identifiers and returns appropriate status.     */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* handle the export built-in command */
+#include "minishell.h"
+
 int	builtin_export(char **args, t_minishell *shell)
 {
 	int	i;
@@ -33,9 +41,6 @@ int	builtin_export(char **args, t_minishell *shell)
 	return (error_found);
 }
 
-/*	process a single export argument;
-	split arg into name and value, validate name, set environment variable.
-	return 0 on success, 1 on error */
 int	process_export_argument(const char *arg, t_minishell *shell)
 {
 	char	*value;

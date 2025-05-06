@@ -20,7 +20,7 @@ SOURCES		:= $(addprefix $(SOURCES_DIRECTORY)/,\
 			$(addprefix lexer/, lexer_init.c lexer_token_processing.c lexer_token_types.c \
 				lexer_token_collector.c lexer_char_handlers.c lexer_token_utils.c lexer_token_factory.c) \
 			$(addprefix parser/, parser_ast_builder.c parser_utils.c heredoc_init.c \
-				heredoc_loop.c heredoc_cleanup.c heredoc_handler.c heredoc_creation.c) \
+				heredoc_loop.c heredoc_cleanup.c heredoc_parser.c heredoc_creation.c) \
 			$(addprefix interpreter/, interpreter.c) \
 			$(addprefix pipe/, pipe.c) \
 			$(addprefix builtin/, builtin_handler.c builtin_pwd_env.c builtin_echo.c \
