@@ -10,10 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Resolves the full path of a command by checking if it's directly usable    */
+/* or by searching through directories listed in the PATH environment var.    */
+/* Splits PATH into directories and scans them for an executable match.       */
+/* Returns a heap-allocated string with the valid path or NULL if not found.  */
+/* Supports both absolute/relative paths and PATH-based resolution.           */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* build full executable path for a command by searching PATH directories
-	if cmd contains '/', treat it as direct path, otherwise search in PATH */
+#include "minishell.h"
+
 char	*build_command_path(char *str, t_minishell *shell)
 {
 	char	**directories;
@@ -33,9 +41,6 @@ char	*build_command_path(char *str, t_minishell *shell)
 	return (result_path);
 }
 
-/*	split PATH environment variable into an array of directories.
-	search for "PATH=" prefix in the environment variables
- 	and split string at each ':' char after the prefix to extract */
 char	**create_directories(t_minishell *shell)
 {
 	int		i;
@@ -64,7 +69,6 @@ char	**create_directories(t_minishell *shell)
 	return (NULL);
 }
 
-/* search directories for the executable command and return its full path. */
 char	*find_executable_path(char *str, char **directories, t_minishell *shell)
 {
 	int		i;

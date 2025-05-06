@@ -10,7 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Manages signal handling specifically for heredoc operations in the shell.  */
+/* It sets up custom handlers for SIGINT, SIGQUIT, and SIGPIPE during heredoc */
+/* processing to ensure proper behavior when handling user interruptions.     */
+/* Functions include setting handlers, ignoring signals, and resetting them   */
+/* after the heredoc operation completes, with proper error handling in place.*/
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 void	handle_sigint_at_child_heredoc(int sig);
 
@@ -82,13 +92,3 @@ void	reset_sigint_at_heredoc(t_minishell *shell)
 		exit(EXIT_FAILURE);
 	}
 }
-
-/*	signal handler for SIGINT (Ctrl+C) at prompt */
-// void	handle_sigint_at_child_heredoc(int sig)
-// {
-// 	g_received_signal = sig;
-// 	write(STDOUT_FILENO, "\n", 1);
-// 	rl_replace_line("", 0);
-// 	rl_on_new_line();
-// 	write(STDOUT_FILENO, "Press enter", 11);
-// }

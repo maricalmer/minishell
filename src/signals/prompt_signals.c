@@ -10,10 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Manages signal handling for the shell's prompt, configuring handlers for   */
+/* SIGINT, SIGQUIT, and SIGPIPE to ensure appropriate behavior during user    */
+/* input. SIGINT triggers a prompt reset, while SIGQUIT and SIGPIPE are       */
+/* ignored to prevent interruption. Proper error handling is included for     */
+/* signal setup.                                                              */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	sets up signal handlers for the shell prompt.
-	handles SIGINT (Ctrl+C) and ignores SIGQUIT (Ctrl+\). */
+#include "minishell.h"
+
 void	setup_prompt_signals(t_minishell *shell)
 {
 	setup_sigint_handler(shell);
@@ -21,12 +29,6 @@ void	setup_prompt_signals(t_minishell *shell)
 	setup_sigpipe_handler(shell);
 }
 
-/*	setup SIGINT (Ctrl+C) signal handler for the prompt
-	declare a sigaction structure to specify the action for SIGINT
-	configure signal action to use handle_sigint_at_prompt
-	when SIGINT received, SA_RESTART flag restarts interrupted system calls
-	sigemptyset() initializes the signal mask to exclude all signals
-	apply the sigaction for SIGINT, if it fails, print an error and exit */
 void	setup_sigint_handler(t_minishell *shell)
 {
 	struct sigaction	sa;
@@ -42,7 +44,6 @@ void	setup_sigint_handler(t_minishell *shell)
 	}
 }
 
-/*	signal handler for SIGINT (Ctrl+C) at prompt */
 void	handle_sigint_at_prompt(int sig)
 {
 	write(STDOUT_FILENO, "\n", 1);
@@ -52,12 +53,6 @@ void	handle_sigint_at_prompt(int sig)
 	g_received_signal = sig;
 }
 
-/*	setup SIGQUIT (Ctrl+\) signal handler to ignore it at the prompt
-	declare a sigaction structure to specify the action for SIGQUIT
-	configure signal action to use SIG_IGN, i.e. to ignore SIGQUIT
-	when SIGQUIT received, SA_RESTART flag restarts interrupted system calls
-	sigemptyset() initializes the signal mask to exclude all signals
-	apply the sigaction for SIGQUIT, if it fails, print an error and exit */
 void	setup_sigquit_handler(t_minishell *shell)
 {
 	struct sigaction	sa;

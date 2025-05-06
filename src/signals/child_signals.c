@@ -10,10 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles signal management for child processes. It includes functions to    */
+/* reset signal handlers to default behaviors and to ignore certain signals   */
+/* (e.g., SIGINT and SIGQUIT) during command execution, preventing the shell  */
+/* from being interrupted by these signals. Proper error handling is provided */
+/* in case of failure when setting signal actions.                            */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	resets signal handlers to their default behavior.
-	used in child processes before executing external commands */
+#include "minishell.h"
+
 void	reset_signal_handlers(t_minishell *shell)
 {
 	struct sigaction	sa;
@@ -41,8 +49,6 @@ void	reset_signal_handlers(t_minishell *shell)
 	}
 }
 
-/*	ignores SIGINT and SIGQUIT in parent process during command execution,
-	preventing shell from being interrupted by these signals */
 void	ignore_signal_handlers(t_minishell *shell)
 {
 	struct sigaction	sa;

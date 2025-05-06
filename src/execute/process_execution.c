@@ -10,10 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles the execution flow for child and parent processes in command       */
+/* execution. Manages redirections, validates commands, and handles errors    */
+/* during execve. Ensures proper signal handling and error reporting for      */
+/* command execution. Parent process waits for child termination and updates  */
+/* the shell's exit status. Provides cleanup and graceful exit upon           */
+/* encountering errors like permissions.                                      */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	reset signal handlers, setup redirections, validate the command
-	and attempt to execute it; handle any execution errors appropriately */
+#include "minishell.h"
+
 void	execute_command_child(t_command *cmd, char **env, t_minishell *shell)
 {
 	t_files	*infile;
@@ -35,8 +44,6 @@ void	execute_command_child(t_command *cmd, char **env, t_minishell *shell)
 	}
 }
 
-/*	validate cmd by checking its existence, check if its a dir & if its exec;
-	if a check fails, print appropriate error msg and exit with correct code */
 void	validate_command(t_command *cmd, t_minishell *shell)
 {
 	struct stat	st;
@@ -61,7 +68,6 @@ void	validate_command(t_command *cmd, t_minishell *shell)
 	}
 }
 
-/*	print error msg to STDERR, free gc, exit with the given status code */
 void	print_error_and_exit(char *cmd_name, char *message,
 		int exit_code, t_minishell *shell)
 {
@@ -74,8 +80,6 @@ void	print_error_and_exit(char *cmd_name, char *message,
 	exit(exit_code);
 }
 
-/*	wait for child process to finish, update last exit status based on
-	child's exit status or termination signal, and setup prompt signals */
 void	handle_parent_process(pid_t pid, t_minishell *shell)
 {
 	int	status;

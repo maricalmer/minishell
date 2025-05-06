@@ -10,11 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles parsing and struct population for command tokens during execution. */
+/* Processes built-in and external commands, setting cmd_name, args, and path.*/
+/* Also manages input/output redirections and handles syntax errors safely.   */
+/* Ensures graceful failure with cleanup if memory allocation fails.          */
+/* Returns updated token pointers or argument index for correct parsing flow. */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	update cmd->args and cmd->cmd_name
-	i: current index in cmd->args.
-	return updated index */
+#include "minishell.h"
+
 int	process_builtin_cmd(t_command *cmd, t_token *token, t_minishell *shell,
 		int i)
 {
@@ -33,9 +40,6 @@ int	process_builtin_cmd(t_command *cmd, t_token *token, t_minishell *shell,
 	return (i + 1);
 }
 
-/*	update cmd->args, cmd->cmd_name and cmd->path
-	i: current index in cmd->args.
-	return updated index */
 int	process_extern_cmd(t_command *cmd, t_token *token, t_minishell *shell,
 		int i)
 {
@@ -55,7 +59,6 @@ int	process_extern_cmd(t_command *cmd, t_token *token, t_minishell *shell,
 	return (i + 1);
 }
 
-/*	process redirect input token, update cmd->infile */
 t_token	*process_redirect_in(t_command *cmd, t_token *token, t_minishell *shell)
 {
 	if (token->next && token->next->type == TOKEN_FILENAME)
@@ -74,7 +77,6 @@ t_token	*process_redirect_in(t_command *cmd, t_token *token, t_minishell *shell)
 	}
 }
 
-/*	process redirect output token, update cmd->outfile */
 t_token	*process_redirect_out(t_command *cmd, t_token *token,
 		t_minishell *shell)
 {
@@ -94,7 +96,6 @@ t_token	*process_redirect_out(t_command *cmd, t_token *token,
 	}
 }
 
-/*	process redirect append token, update cmd->outfile */
 t_token	*process_redirect_append(t_command *cmd, t_token *token,
 		t_minishell *shell)
 {

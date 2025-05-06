@@ -10,7 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles heredoc tokens during parsing and sets up corresponding input      */
+/* redirection for commands. Allocates heredoc file nodes with delimiters,    */
+/* links them into the command’s infile list, and retrieves the correct       */
+/* heredoc file descriptor. Ensures fallback to /dev/null on error.           */
+/* Integrates with shell’s memory management via garbage collection.          */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 t_token	*handle_heredoc_token(t_command *cmd, t_token *token,
 		t_minishell *shell)

@@ -10,10 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Executes an external command by forking the shell process.                 */
+/* Validates the command path; if missing, prints an error and exits.         */
+/* In the child process, replaces image with the external command.            */
+/* The parent waits for the child and updates the shell's exit status.        */
+/* Handles execution errors like missing commands or failed forks.            */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	check if cmd path exists, handle errors if not or exec cmd by forking a
-	child process */
+#include "minishell.h"
+
 void	execute_external(t_command *cmd, char **env, t_minishell *shell)
 {
 	if (!cmd->path)
@@ -24,7 +32,6 @@ void	execute_external(t_command *cmd, char **env, t_minishell *shell)
 	fork_and_execute(cmd, env, shell);
 }
 
-/* print an error message and set last exit status to 127 */
 void	handle_command_not_found(char *cmd_name, t_minishell *shell)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -33,8 +40,6 @@ void	handle_command_not_found(char *cmd_name, t_minishell *shell)
 	shell->last_exit_status = 127;
 }
 
-/*	fork current process; in child process, exec external cmd;
-	in parent process, wait for child and update exit status */
 void	fork_and_execute(t_command *cmd, char **env, t_minishell *shell)
 {
 	pid_t	pid;

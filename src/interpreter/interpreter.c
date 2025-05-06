@@ -10,9 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Traverses and evaluates an abstract syntax tree (AST) representing a       */
+/* command pipeline, executing commands, pipes, and logical operators based   */
+/* on node types. The file handles execution flow through AST nodes for       */
+/* different shell operations, including built-in commands and redirection    */
+/* handling.                                                                  */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* main function to read and execute the parsed AST */
+#include "minishell.h"
+
 void	read_tree(t_ast_node *root, t_minishell *shell)
 {
 	if (root == NULL)
@@ -21,8 +30,6 @@ void	read_tree(t_ast_node *root, t_minishell *shell)
 		evaluate_and_execute(root, shell);
 }
 
-/*	handle execution of diffrent types of AST nodes
-	i.e. commands, pipes, or logical operators */
 void	evaluate_and_execute(t_ast_node *node, t_minishell *shell)
 {
 	if (node->type == NODE_COMMAND)
@@ -33,7 +40,6 @@ void	evaluate_and_execute(t_ast_node *node, t_minishell *shell)
 		execute_logical_operator_node(node, shell);
 }
 
-/*	init cmd struct & exec either external or builtin cmd based on token type */
 void	execute_command_node(t_ast_node *node, t_minishell *shell)
 {
 	t_command	cmd;
@@ -50,8 +56,6 @@ void	execute_command_node(t_ast_node *node, t_minishell *shell)
 	}
 }
 
-/*	evaluate left subtree and, based on the operator type and left result,
-	decide whether to eval right subtree; return result of left subtree eval */
 void	execute_logical_operator_node(t_ast_node *node, t_minishell *shell)
 {
 	evaluate_and_execute(node->left, shell);

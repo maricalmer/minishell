@@ -10,7 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Utility functions for managing the shell's environment variables.          */
+/* Includes duplication of the initial environment, setting variables,        */
+/* formatting name-value pairs, and dynamically adding new entries.           */
+/* All allocations are handled using a custom garbage collector system.       */
+/* Ensures proper memory management and seamless updates to the env array.    */
+/* Returns error codes when memory or format issues occur.                    */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 char	**duplicate_env(char **envp, t_minishell *shell)
 {

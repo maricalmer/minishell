@@ -10,9 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Initializes a command structure from a list of parsed tokens.              */
+/* Allocates memory for arguments, sets command metadata, and processes       */
+/* redirection, heredocs, and built-in or external command tokens.            */
+/* Uses garbage-collected allocations for safety and cleanup.                 */
+/* Delegates specific token handling to dedicated helpers for modularity.     */
+/* Finalizes command setup by storing it in the shell context.                */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	initialize command based on tokens */
+#include "minishell.h"
+
 void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 {
 	int	arg_count;
@@ -57,9 +67,6 @@ int	count_arg_tokens(t_token *tokens)
 	return (count);
 }
 
-/*	process a single token and update cmd struct
-	i: pointer to current index in cmd->args.
-	return the next token to process */
 t_token	*process_token(t_command *cmd, t_token *token, t_minishell *shell,
 		int *i)
 {

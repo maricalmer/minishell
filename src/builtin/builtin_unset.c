@@ -10,9 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Implements the `unset` built-in, which removes environment variables.      */
+/* Validates each argument's format before attempting removal. Utilities      */
+/* include checking for valid names, locating environment entries, and        */
+/* safely shifting entries to maintain array integrity. Returns 0 on success  */
+/* or 1 if any invalid identifiers are encountered.                           */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* handle unset built-in command */
+#include "minishell.h"
+
 int	builtin_unset(char **args, t_minishell *shell)
 {
 	int	i;
@@ -31,7 +40,6 @@ int	builtin_unset(char **args, t_minishell *shell)
 	return (return_status);
 }
 
-/* process a single unset argument */
 int	process_unset_argument(const char *arg, t_minishell *shell)
 {
 	if (!is_valid_env_name(arg))
@@ -43,8 +51,6 @@ int	process_unset_argument(const char *arg, t_minishell *shell)
 	return (0);
 }
 
-/* check if string is valid environment variable name;
-	i.e. name should start with alpha or '_' and contain only alnum or '_' */
 int	is_valid_env_name(const char *name)
 {
 	if (!ft_isalpha(*name) && *name != '_')
@@ -58,7 +64,6 @@ int	is_valid_env_name(const char *name)
 	return (1);
 }
 
-/* remove an environment variable from env list */
 int	unset_env_variable(const char *name, t_minishell *shell)
 {
 	int	index;
@@ -76,7 +81,6 @@ int	unset_env_variable(const char *name, t_minishell *shell)
 	return (0);
 }
 
-/* find the index of a variable in the environment array */
 int	find_env_index(const char *name, t_minishell *shell)
 {
 	int		i;

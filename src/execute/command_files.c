@@ -10,9 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Manages input and output file nodes for a command, handling creation,      */
+/* error checking, and list appending. Files are opened with appropriate      */
+/* flags for reading or writing, with support for append and truncate modes.  */
+/* On error, fallback to /dev/null ensures execution continues safely.        */
+/* All memory is managed using the shell’s garbage collector system.          */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	create new file node for infile or outfile */
+#include "minishell.h"
+
 t_files	*create_new_file_node(t_minishell *shell)
 {
 	t_files	*new_file;
@@ -28,7 +37,6 @@ t_files	*create_new_file_node(t_minishell *shell)
 	return (new_file);
 }
 
-/*	add new file node to file list in cmd */
 void	append_file_node(t_files **file_list, t_files *new_file)
 {
 	t_files	*current;
@@ -60,8 +68,6 @@ void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell)
 	append_file_node(&cmd->infile, new_infile);
 }
 
-/*	add an outfile to the command.
-	append_flag: flag indicating whether to append (1) or truncate (0) */
 void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,
 		int append_flag)
 {

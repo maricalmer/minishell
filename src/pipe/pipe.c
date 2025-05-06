@@ -10,9 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Manages the creation and execution of processes involved in a pipe         */
+/* operation. The file handles setting up pipe file descriptors, forking      */
+/* child processes, and redirecting input/output between the processes. It    */
+/* also waits for the processes to finish and updates the shell's exit status */
+/* based on the result.                                                       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* initialize pipe between two commands represented by AST nodes */
+#include "minishell.h"
+
 void	init_pipe(t_ast_node *node, t_minishell *shell)
 {
 	int		fds[2];
@@ -40,7 +49,6 @@ void	init_pipe(t_ast_node *node, t_minishell *shell)
 	shell->in_pipe = 0;
 }
 
-/* create a pipe and handle error if not created */
 int	create_pipe_fds(int fds[2])
 {
 	if (pipe(fds) == -1)
@@ -51,7 +59,6 @@ int	create_pipe_fds(int fds[2])
 	return (0);
 }
 
-/*fork left child process, setup writing to pipe; return pid of forked process*/
 pid_t	fork_left_child(int fds[], t_ast_node *node, t_minishell *shell)
 {
 	pid_t	pid;
@@ -80,8 +87,6 @@ pid_t	fork_left_child(int fds[], t_ast_node *node, t_minishell *shell)
 	return (pid);
 }
 
-/*	fork right child process, setup reading from pipe;
-	return pid of the forked child process */
 pid_t	fork_right_child(int fds[], t_ast_node *node, t_minishell *shell)
 {
 	pid_t	pid;

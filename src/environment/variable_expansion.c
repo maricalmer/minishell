@@ -10,11 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles variable expansion during lexing by replacing $VAR or $? tokens    */
+/* with their corresponding values from the shell environment or exit code.   */
+/* Includes utilities to parse variable names, retrieve their values, and     */
+/* append them to the current buffer using garbage-collected memory.          */
+/* Supports special case expansion for the exit status variable `$?`.         */
+/* Ensures robustness with fallback to empty string if variable is undefined. */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	advance_lexer_char to skip $; collect_variable_name; get_variable_value;
-	if variable doesn't exist, use an empty str, ""; append value str to buffer;
-	return status, 1 on sucess or 0 on failure */
+#include "minishell.h"
+
 int	handle_variable_expansion(t_lexer *lexer, char **buffer, t_minishell *shell)
 {
 	char	*var_name;
@@ -32,8 +40,6 @@ int	handle_variable_expansion(t_lexer *lexer, char **buffer, t_minishell *shell)
 	return (status);
 }
 
-/*	current_pos after $ to start collecting var_name; update lexer position,
-	i.e. move past the variable name */
 char	*collect_variable_name(t_lexer *lexer, t_minishell *shell)
 {
 	char		*var_name;
@@ -61,7 +67,6 @@ char	*collect_variable_name(t_lexer *lexer, t_minishell *shell)
 	}
 }
 
-/* loop chars after $, if char is alphanumeric or _, it forms variable name */
 int	get_variable_name_length(const char *str)
 {
 	int	length;
@@ -74,7 +79,6 @@ int	get_variable_name_length(const char *str)
 	return (length);
 }
 
-/* return (pointer to VALUE part based on NAME); if nonexistent return "" */
 char	*get_variable_value(const char *var_name, t_minishell *shell)
 {
 	char	*exit_status_str;
@@ -100,8 +104,6 @@ char	*get_variable_value(const char *var_name, t_minishell *shell)
 	return ("");
 }
 
-/*	join new str to existing buffer; free old buffer; update to new;
-	return 1 on success and 0 on failure */
 int	append_to_buffer(char **buffer, const char *str, t_minishell *shell)
 {
 	*buffer = gc_strjoin(&shell->gc_head, *buffer, str);

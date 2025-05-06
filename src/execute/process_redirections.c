@@ -10,10 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles input and output redirections by duplicating file descriptors.     */
+/* Ensures proper redirection for both standard input and output during       */
+/* command execution, using file nodes representing the input and output      */
+/* files. The function safely handles errors in redirection setup, exiting on */
+/* failure.                                                                   */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	traverses linked list to find the last node, i.e. the last file
-	return pointer to last file node, or NULL if the list is empty */
+#include "minishell.h"
+
 t_files	*get_last_file(t_files *files)
 {
 	if (!files)
@@ -23,9 +31,6 @@ t_files	*get_last_file(t_files *files)
 	return (files);
 }
 
-/*	do input & output redirects by dup fds for input & output specified in cmd
-	infile: pointer to last input file node
-	outfile: pointer to last output file node */
 void	setup_redirections(t_files *infile, t_files *outfile,
 		t_minishell *shell)
 {

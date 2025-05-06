@@ -10,11 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Implements the `pwd` and `env` built-in commands. `pwd` prints the current */
+/* working directory, and `env` prints the environment variables. Both handle */
+/* optional output redirection. Utility checks for argument errors and export */
+/* formatting support are also included.                                      */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*
-getcwd() sets current working directory path into a path_buffer of size PATH_MAX
-then	ft_putendl_fd(void) outputs the current working directory path */
+#include "minishell.h"
+
 int	builtin_pwd(t_command *cmd)
 {
 	char	*current_working_directory;
@@ -83,7 +89,6 @@ int	cd_too_many_arguments(char **args)
 	return (0);
 }
 
-/* print all environment variables prefixed with 'declare -x' */
 int	print_export_without_args(t_minishell *shell)
 {
 	int	i;

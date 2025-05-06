@@ -10,7 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles signal setup and management for pipe operations in the shell.      */
+/* It configures handlers for SIGINT, SIGQUIT, and SIGPIPE during pipe        */
+/* execution, ensuring proper interruption handling for pipe processes.       */
+/* Includes handling SIGINT by displaying a new line and redisplaying the     */
+/* prompt, while safely managing errors during signal setup.                  */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 void	setup_pipe_signals(t_minishell *shell)
 {
