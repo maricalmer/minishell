@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:18:42 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 23:33:29 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/06 10:22:57 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Initializes heredoc processing by setting up a pipe and forking a child.   */
+/* The child reads heredoc input; the parent waits and handles interruptions. */
+/* Signal handlers are configured to ensure proper shell behavior.            */
+/* Associates an available heredoc fd with its corresponding file entry.      */
+/* Gracefully handles SIGINT during heredoc to maintain shell state.          */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 void	init_heredoc(t_minishell *shell, t_token *token)
 {

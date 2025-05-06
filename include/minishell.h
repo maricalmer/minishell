@@ -6,7 +6,7 @@
 /*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2025/05/05 23:21:08 by maricalmer       ###   ########.fr       */
+/*   Updated: 2025/05/06 10:19:33 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,13 +216,13 @@ int							validate_closing_parenthesis(const char *str);
 void						update_quote_states(char c, int *in_single_quote,
 								int *in_double_quote);
 
-/* lexer_main.c */
+/* lexer_init.c */
 void						run_lexer(char *str, t_minishell *shell);
 void						initialize_lexer_and_tokens(char *str,
 								t_lexer *lexer, t_minishell *shell);
 t_lexer						init_lexer(const char *arg);
 
-/* lexer_process.c */
+/* lexer_token_processing.c */
 int							process_lexer_tokens(t_lexer *lexer,
 								t_minishell *shell);
 void						skip_whitespace(t_lexer *lexer);
@@ -232,12 +232,12 @@ int							count_remove_trailing_parenth(char *value);
 int							handle_unclosed_quotes(t_lexer *lexer,
 								t_minishell *shell);
 
-/* lexer_token.c */
+/* lexer_token_factory.c */
 t_token						*get_next_token(t_lexer *lexer, t_minishell *shell);
 t_token						*create_token(t_token_type type, char *value,
 								t_minishell *shell);
 
-/* lexer_assign_types.c */
+/* lexer_token_types.c */
 int							is_special_character(t_lexer *lexer);
 t_token_type				handle_special_char_token(t_lexer *lexer,
 								char **value, t_minishell *shell);
@@ -247,7 +247,7 @@ t_token_type				get_special_character_token_type(char *value);
 t_token_type				handle_regular_token(t_lexer *lexer, char **value,
 								t_minishell *shell);
 
-/* lexer_state_handler.c */
+/* lexer_token_collector.c */
 char						*collect_token(t_lexer *lexer, t_minishell *shell);
 int							handle_default_state(t_lexer *lexer, char **buffer,
 								t_minishell *shell);
@@ -256,13 +256,13 @@ int							handle_single_quote_state(t_lexer *lexer,
 int							handle_double_quote_state(t_lexer *lexer,
 								char **buffer, t_minishell *shell);
 
-/* lexer_state_utils.c */
+/* lexer_char_handlers.c */
 int							handle_dollar_sign(t_lexer *lexer, char **buffer,
 								t_minishell *shell);
 int							advance_and_append(t_lexer *lexer, char **buffer,
 								t_minishell *shell);
 
-/* lexer_utils.c */
+/* lexer_token_utils.c */
 int							count_tokens(t_token *tokens);
 void						token_to_list(t_token **tokens, t_token *new);
 void						update_redirect_tokens(t_token *tokens,
@@ -281,7 +281,7 @@ char						*get_variable_value(const char *var_name,
 int							append_to_buffer(char **buffer, const char *str,
 								t_minishell *shell);
 
-/* parser.c */
+/* parser_ast_builder.c */
 t_ast_node					*parse_expression(t_minishell *shell,
 								int precedence_threshold);
 t_ast_node					*parse_condition(t_minishell *shell);

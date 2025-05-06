@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   lexer_token_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 07:10:36 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/06 10:15:38 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Utility functions for lexer and token list operations.                     */
+/*  - Includes token counting, list management, and redirect updates.         */
+/*  - Supports linked list manipulation (add, get last) for tokens.           */
+/*  - Handles lexer character advancement and redirect-related token typing.  */
+/*  - Aids higher-level lexer logic with modular, reusable helpers.           */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 int	count_tokens(t_token *tokens)
 {
@@ -27,7 +37,6 @@ int	count_tokens(t_token *tokens)
 	return (count);
 }
 
-/*	adds a new token to the end of the tokens linked list */
 void	token_to_list(t_token **tokens, t_token *new)
 {
 	t_token	*tmp;
@@ -55,7 +64,6 @@ t_token	*get_last_token(t_token *lst)
 	return (tmp);
 }
 
-/* mark next token as filename if the current token is redirect type */
 void	update_redirect_tokens(t_token *tokens, t_minishell *shell)
 {
 	while (tokens)
@@ -80,7 +88,6 @@ void	update_redirect_tokens(t_token *tokens, t_minishell *shell)
 	}
 }
 
-/* moves lexer forward by one char, update current_char based on new position */
 void	advance_lexer_char(t_lexer *lexer)
 {
 	lexer->pos++;

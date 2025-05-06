@@ -3,27 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 06:47:23 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/06 10:19:10 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Parser reads tokens and creates AST nodes (like a converter) and link them
-// with hierarchical realtionship (build the tree)
+/* ************************************************************************** */
+/*                                                                            */
+/* Builds the abstract syntax tree (AST) from tokenized input.                */
+/*  - Supports operator precedence for pipes, AND, OR, and parentheses.       */
+/*  - Parses logical groupings (expressions), subshells (via parentheses),    */
+/*    and command nodes.                                                      */
+/*  - Creates AST nodes with appropriate type and subtree structure.          */
+/*  - Handles heredoc initialization during command parsing.                  */
+/*                                                                            */
+/* ************************************************************************** */
 
-// AST: hierarchical syntactic structure of the source program
-
-// Any programming construct can be
-// handled by making up an operator for the construct and treating as operands
-// the semantically meaningful components of that construct
-
-// In an abstract syntax tree for an expression, each
-// interior node (vs.leaves) represents an operator. There position dictates
-// the precedence
-
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 {

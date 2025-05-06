@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_token.c                                      :+:      :+:    :+:   */
+/*   lexer_token_factory.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 23:48:14 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/16 01:01:57 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/06 10:13:21 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles creation of the next token in the lexer stream.                    */
+/*  - Differentiates between special and regular tokens.                      */
+/*  - Skips whitespace and recursively skips empty invalid tokens.            */
+/*  - Wraps token construction using type, value, and garbage-collected heap. */
+/*  - Ensures memory-safe token creation for shell parsing.                   */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	after skipping any leading whitespace, collect the next token, determine
-	its type (TOKEN_BUILTIN_CMD,TOKEN_PIPE, etc) and return * to new token */
+#include "minishell.h"
+
 t_token	*get_next_token(t_lexer *lexer, t_minishell *shell)
 {
 	char			*value;
@@ -35,7 +43,6 @@ t_token	*get_next_token(t_lexer *lexer, t_minishell *shell)
 	return (new_token);
 }
 
-/* creates new token with specified type and value */
 t_token	*create_token(t_token_type type, char *value, t_minishell *shell)
 {
 	t_token	*token;

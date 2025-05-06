@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_assign_types.c                               :+:      :+:    :+:   */
+/*   lexer_token_types.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 18:06:47 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 00:59:01 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/06 10:03:20 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Handles token classification during lexical analysis.                      */
+/*  - Detects special shell characters and assigns appropriate token types.   */
+/*  - Collects and validates regular and special tokens from input.           */
+/*  - Updates lexer state flags, including command context awareness.         */
+/*  - Differentiates between commands, arguments, redirections, and operators.*/
+/*                                                                            */
+/* ************************************************************************** */
 
-/* check if current lexer char is a special token character */
+#include "minishell.h"
+
 int	is_special_character(t_lexer *lexer)
 {
 	char	c;
@@ -28,8 +37,6 @@ int	is_special_character(t_lexer *lexer)
 	return (0);
 }
 
-/*	collect special char token, assign its type, update lexer->command_expected;
-	return token type */
 t_token_type	handle_special_char_token(t_lexer *lexer, char **value,
 		t_minishell *shell)
 {
@@ -45,7 +52,6 @@ t_token_type	handle_special_char_token(t_lexer *lexer, char **value,
 	return (type);
 }
 
-/* set *special_char_str with maximum of 2 chars + null terminator */
 char	*collect_special_character(t_lexer *lexer, t_minishell *shell)
 {
 	int		i;
@@ -67,7 +73,6 @@ char	*collect_special_character(t_lexer *lexer, t_minishell *shell)
 	return (gc_strdup(&shell->gc_head, special_char_str));
 }
 
-/* single & is not supported */
 t_token_type	get_special_character_token_type(char *value)
 {
 	if (ft_strncmp(value, "|", 2) == 0)
@@ -94,8 +99,6 @@ t_token_type	get_special_character_token_type(char *value)
 		return (TOKEN_INVALID);
 }
 
-/*	collect regular token, assign its type based on whether a cmd is expected,
-	and updates the lexer state; return token type */
 t_token_type	handle_regular_token(t_lexer *lexer, char **value,
 		t_minishell *shell)
 {

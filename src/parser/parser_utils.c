@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:11:39 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/09 10:13:57 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/06 10:20:51 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Utility functions for parser logic and AST construction.                   */
+/*  - Determines if a token is a statement-level operator (||, &&, |).        */
+/*  - Provides operator precedence levels for proper AST structure.           */
+/*  - Supports linked list management of token sequences.                     */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 int	is_statement_delimiter(int type)
 {

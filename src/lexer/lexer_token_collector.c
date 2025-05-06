@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_state_handler.c                              :+:      :+:    :+:   */
+/*   lexer_token_collector.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 16:42:16 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 21:52:16 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/06 10:11:00 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Manages lexer behavior based on parsing state (default, quotes, etc.).     */
+/*  - Collects characters into tokens according to current lexer state.       */
+/*  - Handles state transitions for quotes and variable expansion.            */
+/*  - Terminates or continues token collection based on special characters.   */
+/*  - Ensures safe token construction via state-specific handlers.            */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*	collects the next token from the lexer based on its current state */
+#include "minishell.h"
+
 char	*collect_token(t_lexer *lexer, t_minishell *shell)
 {
 	char	*buffer;
@@ -37,9 +46,6 @@ char	*collect_token(t_lexer *lexer, t_minishell *shell)
 	return (buffer);
 }
 
-/*	if whitespace found, end current token; if ' or " found, change STATE;
-	if $ found, handle var expansion; if special char found, end current token;
-	otherwise advance_and_append each char */
 int	handle_default_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 {
 	if (ft_iswhitespace(lexer->current_char))
@@ -66,7 +72,6 @@ int	handle_default_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 	return (TOKEN_CONTINUE);
 }
 
-/* if ' found, change to DEFAULT_STATE; advance_and_append all chars */
 int	handle_single_quote_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 {
 	if (lexer->current_char == '\'')
@@ -82,7 +87,6 @@ int	handle_single_quote_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 	return (TOKEN_CONTINUE);
 }
 
-/* if " found, change to DEFAULT_STATE; handle $; or advance_and_append*/
 int	handle_double_quote_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 {
 	if (lexer->current_char == '"')

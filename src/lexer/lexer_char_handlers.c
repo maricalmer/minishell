@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_state_utils.c                                :+:      :+:    :+:   */
+/*   lexer_char_handlers.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 21:51:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 22:04:23 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/06 10:10:57 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Provides utility functions for lexer state handling and token building.    */
+/*  - Handles `$` for variable expansion or literal inclusion.                */
+/*  - Appends current character to token buffer and advances lexer position.  */
+/*  - Supports state-specific logic used during token collection.             */
+/*  - Ensures memory safety via garbage-collected string operations.          */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* function still has too many lines of code (29) */
+#include "minishell.h"
+
 int	handle_dollar_sign(t_lexer *lexer, char **buffer, t_minishell *shell)
 {
 	size_t	str_len;
@@ -38,8 +47,6 @@ int	handle_dollar_sign(t_lexer *lexer, char **buffer, t_minishell *shell)
 	return (TOKEN_CONTINUE);
 }
 
-/*	current_char_str: temp str to hold current_char as a null-terminated str
-	join current buffer with current_char_str at the end, move lexer forward */
 int	advance_and_append(t_lexer *lexer, char **buffer, t_minishell *shell)
 {
 	char	current_char_str[2];

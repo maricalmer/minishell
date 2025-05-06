@@ -17,9 +17,9 @@ SOURCES		:= $(addprefix $(SOURCES_DIRECTORY)/,\
 			$(addprefix input/, input_handling.c input_syntax_checker.c \
 				operator_syntax.c delimiter_utils.c grouping_syntax.c \
 				grouping_validation.c) \
-			$(addprefix lexer/, lexer_main.c lexer_process.c lexer_assign_types.c \
-				lexer_state_handler.c lexer_state_utils.c lexer_utils.c lexer_token.c) \
-			$(addprefix parser/, parser.c parser_utils.c heredoc_init.c \
+			$(addprefix lexer/, lexer_init.c lexer_token_processing.c lexer_token_types.c \
+				lexer_token_collector.c lexer_char_handlers.c lexer_token_utils.c lexer_token_factory.c) \
+			$(addprefix parser/, parser_ast_builder.c parser_utils.c heredoc_init.c \
 				heredoc_loop.c heredoc_cleanup.c heredoc_handler.c heredoc_creation.c) \
 			$(addprefix interpreter/, interpreter.c) \
 			$(addprefix pipe/, pipe.c) \

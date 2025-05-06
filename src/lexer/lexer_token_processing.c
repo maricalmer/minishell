@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_process.c                                    :+:      :+:    :+:   */
+/*   lexer_token_processing.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 07:08:16 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 07:09:29 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/06 10:05:35 by maricalmer       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/* Entry point for lexical analysis of shell input.                           */
+/*  - Initializes lexer state and associates it with the shell structure.     */
+/*  - Parses the input into token structures, handling lexical errors.        */
+/*  - Detects and manages unclosed quotes or invalid token sequences.         */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* loop over input chars, creating tokens until EOF or error */
+#include "minishell.h"
+
 int	process_lexer_tokens(t_lexer *lexer, t_minishell *shell)
 {
 	t_token	*new_token;
@@ -32,14 +40,12 @@ int	process_lexer_tokens(t_lexer *lexer, t_minishell *shell)
 	return (0);
 }
 
-/*	skip all leading whitespace characters in the input */
 void	skip_whitespace(t_lexer *lexer)
 {
 	while (lexer->current_char != '\0' && ft_iswhitespace(lexer->current_char))
 		advance_lexer_char(lexer);
 }
 
-/* create and append ')' tokens to shell's token list based on the count */
 void	add_closing_parentheses(int count, t_minishell *shell)
 {
 	t_token	*cl_parenthesis_token;
@@ -53,7 +59,6 @@ void	add_closing_parentheses(int count, t_minishell *shell)
 	}
 }
 
-/* count and remove trailing ')' chars from token value */
 int	count_remove_trailing_parenth(char *value)
 {
 	int		count;
@@ -72,7 +77,6 @@ int	count_remove_trailing_parenth(char *value)
 	return (count);
 }
 
-/* check for unclosed quotes and print error if found */
 int	handle_unclosed_quotes(t_lexer *lexer, t_minishell *shell)
 {
 	if (lexer->state == SINGLE_QUOTE_STATE
