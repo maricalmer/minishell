@@ -12,10 +12,13 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/* Entry point for lexical analysis of shell input.                           */
-/*  - Initializes lexer state and associates it with the shell structure.     */
-/*  - Parses the input into token structures, handling lexical errors.        */
-/*  - Detects and manages unclosed quotes or invalid token sequences.         */
+/* Processes raw input into tokens, handling whitespace and token extraction. */
+/* Strips unmatched trailing parentheses from tokens, except those inside     */
+/* quotes. Restores stripped parentheses later to preserve grouping syntax.   */
+/* Handles quoted strings and compound tokens within shell input.             */
+/* Ensures proper token list construction for parser consumption.             */
+/* Avoids removing parentheses that are part of valid quoted expressions.     */
+/* Critical for correct interpretation of command groups and pipelines.       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +35,12 @@ int	process_lexer_tokens(t_lexer *lexer, t_minishell *shell)
 		new_token = get_next_token(lexer, shell);
 		if (!new_token || new_token->type == TOKEN_INVALID)
 			return (1);
-		cl_parenth_count = count_remove_trailing_parenth(new_token->value);
+		cl_parenth_count = count_remove_trailing_parenth(lexer, new_token->value);
 		if (*new_token->value != '\0')
 			token_to_list(&(shell->tokens), new_token);
 		add_closing_parentheses(cl_parenth_count, shell);
 	}
 	return (0);
-}
-
-void	skip_whitespace(t_lexer *lexer)
-{
-	while (lexer->current_char != '\0' && ft_iswhitespace(lexer->current_char))
-		advance_lexer_char(lexer);
 }
 
 void	add_closing_parentheses(int count, t_minishell *shell)
@@ -59,41 +56,59 @@ void	add_closing_parentheses(int count, t_minishell *shell)
 	}
 }
 
-int	count_remove_trailing_parenth(char *value)
+int get_token_length_in_original_input(t_lexer *lexer)
 {
-	int		count;
-	size_t	len;
+	const char *token_str;
+	int token_len;
 
-	count = 0;
-	if (!value)
-		return (0);
-	len = ft_strlen(value);
-	if (value[0] == '(' && value[len - 1] == ')')
-        return (0);
-	while (len > 0 && value[len - 1] == ')')
-	{
-		count++;
-		value[len - 1] = '\0';
-		len--;
-	}
-	return (count);
+	token_len = 0;
+	token_str = lexer->str + lexer->pos - 1;
+	while (token_str[token_len] && token_str[token_len] != ' ' && token_str[token_len] != '|' && token_str[token_len] != ';')
+		token_len++;
+	return (token_len);
 }
 
-int	handle_unclosed_quotes(t_lexer *lexer, t_minishell *shell)
+void count_removable_parentheses_in_token(t_lexer *lexer, int *removable_count)
 {
-	if (lexer->state == SINGLE_QUOTE_STATE
-		|| lexer->state == DOUBLE_QUOTE_STATE)
+	int token_len;
+	size_t		i;
+	char c;
+	int		in_quotes;
+
+	token_len = get_token_length_in_original_input(lexer);
+	i = lexer->pos - 1 + token_len - 1;
+	in_quotes = 0;
+	while (i >= lexer->pos - 1)
 	{
-		ft_putstr_fd("minishell: unexpected EOF while looking for matching `",
-			2);
-		shell->last_exit_status = 2;
-		if (lexer->state == SINGLE_QUOTE_STATE)
-			ft_putstr_fd("'", 2);
-		else
-			ft_putstr_fd("\"", 2);
-		ft_putstr_fd("'\n", 2);
-		shell->tokens = NULL;
-		return (1);
+		c = lexer->str[i];
+		if (c == '"')
+			in_quotes = !in_quotes;
+		else if (!in_quotes && c == ')')
+			(*removable_count)++;
+		else if (!in_quotes && c != ')')
+			break;
+		i--;
 	}
-	return (0);
+}
+
+int	count_remove_trailing_parenth(t_lexer *lexer, char *value)
+{
+	int		count;
+	size_t	val_len;
+	int		removable_count;
+
+	if (!value || !lexer || !lexer->str)
+		return (0);
+	removable_count = 0;
+	count_removable_parentheses_in_token(lexer, &removable_count);
+	count = 0;
+	val_len = ft_strlen(value);
+	while (val_len > 0 && removable_count > 0 && value[val_len - 1] == ')')
+	{
+		value[val_len - 1] = '\0';
+		val_len--;
+		count++;
+		removable_count--;
+	}
+	return (count);
 }

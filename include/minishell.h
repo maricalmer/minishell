@@ -225,12 +225,9 @@ t_lexer						init_lexer(const char *arg);
 /* lexer_token_processing.c */
 int							process_lexer_tokens(t_lexer *lexer,
 								t_minishell *shell);
-void						skip_whitespace(t_lexer *lexer);
 void						add_closing_parentheses(int count,
 								t_minishell *shell);
-int							count_remove_trailing_parenth(char *value);
-int							handle_unclosed_quotes(t_lexer *lexer,
-								t_minishell *shell);
+int							count_remove_trailing_parenth(t_lexer *lexer, char *value);
 
 /* lexer_token_factory.c */
 t_token						*get_next_token(t_lexer *lexer, t_minishell *shell);
@@ -255,12 +252,15 @@ int							handle_single_quote_state(t_lexer *lexer,
 								char **buffer, t_minishell *shell);
 int							handle_double_quote_state(t_lexer *lexer,
 								char **buffer, t_minishell *shell);
+int							handle_unclosed_quotes(t_lexer *lexer,
+									t_minishell *shell);
 
 /* lexer_char_handlers.c */
 int							handle_dollar_sign(t_lexer *lexer, char **buffer,
 								t_minishell *shell);
 int							advance_and_append(t_lexer *lexer, char **buffer,
 								t_minishell *shell);
+void						skip_whitespace(t_lexer *lexer);
 
 /* lexer_token_utils.c */
 int							count_tokens(t_token *tokens);

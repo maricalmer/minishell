@@ -103,3 +103,22 @@ int	handle_double_quote_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 	}
 	return (TOKEN_CONTINUE);
 }
+
+int	handle_unclosed_quotes(t_lexer *lexer, t_minishell *shell)
+{
+	if (lexer->state == SINGLE_QUOTE_STATE
+		|| lexer->state == DOUBLE_QUOTE_STATE)
+	{
+		ft_putstr_fd("minishell: unexpected EOF while looking for matching `",
+			2);
+		shell->last_exit_status = 2;
+		if (lexer->state == SINGLE_QUOTE_STATE)
+			ft_putstr_fd("'", 2);
+		else
+			ft_putstr_fd("\"", 2);
+		ft_putstr_fd("'\n", 2);
+		shell->tokens = NULL;
+		return (1);
+	}
+	return (0);
+}

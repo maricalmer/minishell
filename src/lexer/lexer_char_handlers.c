@@ -59,3 +59,9 @@ int	advance_and_append(t_lexer *lexer, char **buffer, t_minishell *shell)
 	advance_lexer_char(lexer);
 	return (1);
 }
+
+void	skip_whitespace(t_lexer *lexer)
+{
+	while (lexer->current_char != '\0' && ft_iswhitespace(lexer->current_char))
+		advance_lexer_char(lexer);
+}
