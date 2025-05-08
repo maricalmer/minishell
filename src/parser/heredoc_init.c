@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:18:42 by dlemaire          #+#    #+#             */
-/*   Updated: 2025/05/06 10:22:57 by maricalmer       ###   ########.fr       */
+/*   Updated: 2025/05/08 22:53:28 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	handle_heredoc_parent(pid_t pid, t_minishell *shell, int fd[2])
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		shell->sigint_heredocs = 1;
-		shell->last_exit_status = 130;
+		shell->last_exit_status = SHELL_STATUS_SIGINT;
 		write(STDOUT_FILENO, "\n", 1);
 		close_all_heredocs(shell);
 	}

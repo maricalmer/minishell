@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token_processing.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 07:08:16 by tmurua            #+#    #+#             */
-/*   Updated: 2025/05/06 10:05:35 by maricalmer       ###   ########.fr       */
+/*   Updated: 2025/05/08 22:50:30 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	process_lexer_tokens(t_lexer *lexer, t_minishell *shell)
 		new_token = get_next_token(lexer, shell);
 		if (!new_token || new_token->type == TOKEN_INVALID)
 			return (1);
-		cl_parenth_count = count_remove_trailing_parenth(lexer, new_token->value);
+		cl_parenth_count = count_remove_trailing_parenth(lexer,
+				new_token->value);
 		if (*new_token->value != '\0')
 			token_to_list(&(shell->tokens), new_token);
 		add_closing_parentheses(cl_parenth_count, shell);
@@ -56,23 +57,25 @@ void	add_closing_parentheses(int count, t_minishell *shell)
 	}
 }
 
-int get_token_length_in_original_input(t_lexer *lexer)
+int	get_token_length_in_original_input(t_lexer *lexer)
 {
-	const char *token_str;
-	int token_len;
+	const char	*token_str;
+	int			token_len;
 
 	token_len = 0;
 	token_str = lexer->str + lexer->pos - 1;
-	while (token_str[token_len] && token_str[token_len] != ' ' && token_str[token_len] != '|' && token_str[token_len] != ';')
+	while (token_str[token_len] && token_str[token_len] != ' '
+		&& token_str[token_len] != '|' && token_str[token_len] != ';')
 		token_len++;
 	return (token_len);
 }
 
-void count_removable_parentheses_in_token(t_lexer *lexer, int *removable_count)
+void	count_removable_parentheses_in_token(t_lexer *lexer,
+	int *removable_count)
 {
-	int token_len;
-	size_t		i;
-	char c;
+	int		token_len;
+	size_t	i;
+	char	c;
 	int		in_quotes;
 
 	token_len = get_token_length_in_original_input(lexer);
@@ -86,7 +89,7 @@ void count_removable_parentheses_in_token(t_lexer *lexer, int *removable_count)
 		else if (!in_quotes && c == ')')
 			(*removable_count)++;
 		else if (!in_quotes && c != ')')
-			break;
+			break ;
 		i--;
 	}
 }

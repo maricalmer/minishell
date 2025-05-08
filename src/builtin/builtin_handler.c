@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/18 19:10:59 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/08 22:28:34 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	execute_builtin(t_command *cmd, t_minishell *shell)
 	else if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
 		status = handle_exit_command(cmd->args, shell);
 	else
-		return (-100);
+		return (BUILTIN_NOT_FOUND);
 	shell->last_exit_status = status;
 	return (status);
 }
@@ -75,7 +75,6 @@ int	execute_builtin_echo(t_command *cmd)
 	return (builtin_echo(cmd));
 }
 
-/* print error messages for built-in commands */
 void	print_builtin_error(char *command, char *message)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);

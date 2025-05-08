@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 17:10:19 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 20:05:07 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/08 22:34:13 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char	**duplicate_env(char **envp, t_minishell *shell)
 	return (new_env);
 }
 
-/* set an environment variable */
 int	set_env_variable(const char *name, const char *value, t_minishell *shell)
 {
 	int		index;
@@ -66,7 +65,6 @@ int	set_env_variable(const char *name, const char *value, t_minishell *shell)
 	return (0);
 }
 
-/* create environment string in the format NAME=VALUE */
 char	*create_env_string(const char *name, const char *value,
 		t_minishell *shell)
 {

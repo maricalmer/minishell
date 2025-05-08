@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2025/05/06 10:15:38 by maricalmer       ###   ########.fr       */
+/*   Updated: 2025/05/08 23:02:58 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	update_redirect_tokens(t_token *tokens, t_minishell *shell)
 			{
 				ft_putstr_fd("minishell: syntax error near unexpected token\n",
 					2);
-				shell->last_exit_status = 2;
+				shell->last_exit_status = SHELL_STATUS_MISUSE_BUILTIN;
 			}
 		}
 		tokens = tokens->next;

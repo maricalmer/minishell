@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2025/05/06 10:19:33 by maricalmer       ###   ########.fr       */
+/*   Updated: 2025/05/08 23:08:16 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,22 @@
 # include <limits.h>
 
 /* macros*/
-# define TOKEN_COMPLETE 1
-# define TOKEN_CONTINUE 0
-# define TOKEN_ERROR -1
-# define MIN_PRECEDENCE_LVL 0
-# define READ_END 0
-# define WRITE_END 1
+# define TOKEN_COMPLETE					1
+# define TOKEN_CONTINUE					0
+# define TOKEN_ERROR					-1
+# define MIN_PRECEDENCE_LVL				0
+# define READ_END						0
+# define WRITE_END						1
+# define EXIT_STATUS_MIN				0
+# define EXIT_STATUS_MAX				255
+# define BUILTIN_NOT_FOUND				-100
+# define SHELL_STATUS_SUCCESS			0
+# define SHELL_STATUS_GENERAL_ERROR		1
+# define SHELL_STATUS_MISUSE_BUILTIN	2
+# define SHELL_STATUS_CMD_NO_EXEC		126
+# define SHELL_STATUS_CMD_NOT_FOUND		127
+# define SHELL_SIGNAL_BASE_STATUS		128
+# define SHELL_STATUS_SIGINT			130
 
 /* structures */
 typedef struct s_token		t_token;

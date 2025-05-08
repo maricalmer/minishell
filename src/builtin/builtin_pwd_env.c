@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd_env.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/18 18:21:41 by tmurua           ###   ########.fr       */
+/*   Updated: 2025/05/08 22:31:41 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	builtin_env(t_command *cmd, t_minishell *shell)
 	t_files	*output;
 
 	if (too_many_arguments(cmd->args))
-		return (127);
+		return (SHELL_STATUS_CMD_NOT_FOUND);
 	output = get_last_file(cmd->outfile);
 	if (output)
 		output_fd = output->fd;

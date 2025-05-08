@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token_collector.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 16:42:16 by tmurua            #+#    #+#             */
-/*   Updated: 2025/05/06 10:11:00 by maricalmer       ###   ########.fr       */
+/*   Updated: 2025/05/08 23:02:53 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	handle_unclosed_quotes(t_lexer *lexer, t_minishell *shell)
 	{
 		ft_putstr_fd("minishell: unexpected EOF while looking for matching `",
 			2);
-		shell->last_exit_status = 2;
+		shell->last_exit_status = SHELL_STATUS_MISUSE_BUILTIN;
 		if (lexer->state == SINGLE_QUOTE_STATE)
 			ft_putstr_fd("'", 2);
 		else

@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 20:42:48 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 22:44:04 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:01:45 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell)
 	if (new_infile->fd < 0)
 	{
 		perror(filename);
-		shell->last_exit_status = 1;
+		shell->last_exit_status = SHELL_STATUS_GENERAL_ERROR;
 		cmd->redirect_error_flag = 1;
 		new_infile->fd = open("/dev/null", O_RDONLY);
 	}
@@ -81,7 +81,7 @@ void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,
 	if (new_outfile->fd < 0)
 	{
 		perror(filename);
-		shell->last_exit_status = 1;
+		shell->last_exit_status = SHELL_STATUS_GENERAL_ERROR;
 		cmd->redirect_error_flag = 1;
 		new_outfile->fd = open("/dev/null", O_WRONLY);
 	}

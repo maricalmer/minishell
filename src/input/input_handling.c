@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2025/05/05 22:56:49 by maricalmer       ###   ########.fr       */
+/*   Updated: 2025/05/08 23:08:46 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 		input = read_user_input();
 		if (g_received_signal)
 		{
-			shell->last_exit_status = 128 + g_received_signal;
+			shell->last_exit_status = SHELL_SIGNAL_BASE_STATUS
+				+ g_received_signal;
 			g_received_signal = 0;
 		}
 		if (input == NULL)

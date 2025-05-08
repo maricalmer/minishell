@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_syntax_checker.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maricalmer <maricalmer@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:29:20 by dlemaire          #+#    #+#             */
-/*   Updated: 2025/05/05 23:20:36 by maricalmer       ###   ########.fr       */
+/*   Updated: 2025/05/08 23:02:42 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	handle_syntax_error(char *input, t_minishell *shell)
 		|| !validate_no_empty_parenthesis(input))
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
-		shell->last_exit_status = 2;
+		shell->last_exit_status = SHELL_STATUS_MISUSE_BUILTIN;
 		add_history(input);
 		free(input);
 		return (1);
@@ -41,7 +41,7 @@ int	handle_syntax_error(char *input, t_minishell *shell)
 	if (!ft_strncmp(input, "''", 3) || !ft_strncmp(input, "\"\"", 5))
 	{
 		ft_putstr_fd("Command '' not found\n", 2);
-		shell->last_exit_status = 127;
+		shell->last_exit_status = SHELL_STATUS_CMD_NOT_FOUND;
 		add_history(input);
 		free(input);
 		return (1);

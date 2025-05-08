@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 20:34:26 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 20:36:06 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:05:15 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_token	*process_redirect_in(t_command *cmd, t_token *token, t_minishell *shell)
 	if (token->next && token->next->type == TOKEN_FILENAME)
 	{
 		add_infile_to_cmd(cmd, token->next->value, shell);
-		if (shell->last_exit_status != 0)
+		if (shell->last_exit_status != SHELL_STATUS_SUCCESS)
 			return (NULL);
 		return (token->next->next);
 	}
@@ -72,7 +72,7 @@ t_token	*process_redirect_in(t_command *cmd, t_token *token, t_minishell *shell)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
 		cmd->redirect_error_flag = 1;
-		shell->last_exit_status = 2;
+		shell->last_exit_status = SHELL_STATUS_MISUSE_BUILTIN;
 		return (token->next);
 	}
 }
@@ -83,7 +83,7 @@ t_token	*process_redirect_out(t_command *cmd, t_token *token,
 	if (token->next && token->next->type == TOKEN_FILENAME)
 	{
 		add_outfile_to_cmd(cmd, token->next->value, shell, 0);
-		if (shell->last_exit_status != 0)
+		if (shell->last_exit_status != SHELL_STATUS_SUCCESS)
 			return (NULL);
 		return (token->next->next);
 	}
@@ -91,7 +91,7 @@ t_token	*process_redirect_out(t_command *cmd, t_token *token,
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
 		cmd->redirect_error_flag = 1;
-		shell->last_exit_status = 2;
+		shell->last_exit_status = SHELL_STATUS_MISUSE_BUILTIN;
 		return (token->next);
 	}
 }
@@ -102,7 +102,7 @@ t_token	*process_redirect_append(t_command *cmd, t_token *token,
 	if (token->next && token->next->type == TOKEN_FILENAME)
 	{
 		add_outfile_to_cmd(cmd, token->next->value, shell, 1);
-		if (shell->last_exit_status != 0)
+		if (shell->last_exit_status != SHELL_STATUS_SUCCESS)
 			return (NULL);
 		return (token->next->next);
 	}
@@ -110,7 +110,7 @@ t_token	*process_redirect_append(t_command *cmd, t_token *token,
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
 		cmd->redirect_error_flag = 1;
-		shell->last_exit_status = 2;
+		shell->last_exit_status = SHELL_STATUS_MISUSE_BUILTIN;
 		return (token->next);
 	}
 }

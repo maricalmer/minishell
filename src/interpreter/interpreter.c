@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 20:29:37 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:05:44 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ void	execute_command_node(t_ast_node *node, t_minishell *shell)
 void	execute_logical_operator_node(t_ast_node *node, t_minishell *shell)
 {
 	evaluate_and_execute(node->left, shell);
-	if ((node->type == NODE_AND && shell->last_exit_status == 0)
-		|| (node->type == NODE_OR && shell->last_exit_status != 0))
+	if ((node->type == NODE_AND
+			&& shell->last_exit_status == SHELL_STATUS_SUCCESS)
+		|| (node->type == NODE_OR
+			&& shell->last_exit_status != SHELL_STATUS_SUCCESS))
 		evaluate_and_execute(node->right, shell);
 }

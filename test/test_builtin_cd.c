@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 21:05:22 by dlemaire          #+#    #+#             */
-/*   Updated: 2025/05/08 19:35:49 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:05:59 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_shell_mock(t_minishell *shell)
 	shell->env[2] = strdup("HOME=/tmp");
 	shell->env[3] = NULL;
 
-	shell->last_exit_status = 0;
+	shell->last_exit_status = SHELL_STATUS_SUCCESS;
 	shell->in_pipe = 0;
 	shell->gc_head = NULL;
 	shell->tokens = NULL;

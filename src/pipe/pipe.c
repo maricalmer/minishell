@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/18 19:20:01 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:08:58 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	init_pipe(t_ast_node *node, t_minishell *shell)
 	if (WIFEXITED(status_right))
 		shell->last_exit_status = WEXITSTATUS(status_right);
 	else if (WIFSIGNALED(status_right))
-		shell->last_exit_status = 128 + WTERMSIG(status_right);
+		shell->last_exit_status = SHELL_SIGNAL_BASE_STATUS
+			+ WTERMSIG(status_right);
 	setup_prompt_signals(shell);
 	shell->in_pipe = 0;
 }
