@@ -6,22 +6,21 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 21:05:22 by dlemaire          #+#    #+#             */
-/*   Updated: 2025/04/29 21:41:55 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/08 20:08:29 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.h"
 
-// Helper to init shell + lexer
-static void init_shell_and_lexer(t_minishell *shell, t_lexer *lexer, char *input) {
+static void init_shell_and_lexer(t_minishell *shell, t_lexer *lexer, char *input)
+{
 	shell->gc_head = NULL;
 	shell->tokens = NULL;
 	*lexer = init_lexer(input);
 }
 
-// === TESTS ===
-
-void test_get_next_token_regular_success(void) {
+void	test_get_next_token_regular_success(void)
+{
 	t_minishell shell;
 	t_lexer lexer;
 	init_shell_and_lexer(&shell, &lexer, "ls");
@@ -32,7 +31,8 @@ void test_get_next_token_regular_success(void) {
 	CU_ASSERT_STRING_EQUAL(token->value, "ls");
 }
 
-void test_get_next_token_special_success(void) {
+void	test_get_next_token_special_success(void)
+{
 	t_minishell shell;
 	t_lexer lexer;
 	init_shell_and_lexer(&shell, &lexer, "|");
@@ -43,7 +43,8 @@ void test_get_next_token_special_success(void) {
 	CU_ASSERT_STRING_EQUAL(token->value, "|");
 }
 
-void test_get_next_token_invalid_empty(void) {
+void	test_get_next_token_invalid_empty(void)
+{
 	t_minishell shell;
 	t_lexer lexer;
 	init_shell_and_lexer(&shell, &lexer, "   ");
@@ -52,19 +53,17 @@ void test_get_next_token_invalid_empty(void) {
 	CU_ASSERT_PTR_NULL(token);
 }
 
-int add_lexer_token_tests(void)
+int	add_lexer_token_tests(void)
 {
     CU_pSuite suite = CU_add_suite("lexer_token", 0, 0);
     
     if (!suite)
         return (1);
-    
     if (!CU_add_test(suite, "test_get_next_token_regular_success", test_get_next_token_regular_success) ||
         !CU_add_test(suite, "test_get_next_token_special_success", test_get_next_token_special_success) ||
         !CU_add_test(suite, "test_get_next_token_invalid_empty", test_get_next_token_invalid_empty))
     {
         return (1);
     }
-    
     return (0);
 }

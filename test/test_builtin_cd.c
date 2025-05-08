@@ -6,13 +6,13 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 21:05:22 by dlemaire          #+#    #+#             */
-/*   Updated: 2025/04/29 21:41:55 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:35:49 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.h"
 
-void init_shell_mock(t_minishell *shell)
+void	init_shell_mock(t_minishell *shell)
 {
 	shell->env = malloc(sizeof(char *) * 3);
 	shell->env[0] = strdup("PWD=/mock/pwd");
@@ -30,41 +30,43 @@ void init_shell_mock(t_minishell *shell)
 	shell->sigint_heredocs = 0;
 }
 
-int get_target_path_mock(char **args, t_minishell *shell, char **path)
+int	get_target_path_mock(char **args, t_minishell *shell, char **path)
 {
 	(void)shell;
 	if (args[1] == NULL || strcmp(args[1], "~") == 0)
 	{
 		*path = "/mock/home";
 		if (*path == NULL || strlen(*path) == 0)
-			return 1;
+			return (1);
 	}
 	else
 		*path = args[1];
-	return 0;
+	return (0);
 }
 
-int update_environment_mock(char *oldpwd, t_minishell *shell)
+int	update_environment_mock(char *oldpwd, t_minishell *shell)
 {
 	(void)oldpwd;
 	(void)shell;
-	return 0;
+	return (0);
 }
 
 void	test_get_current_directory(void)
 {
-	char cwd[PATH_MAX];
-	int result = get_current_directory(cwd);
+	char	cwd[PATH_MAX];
+	int		result;
 
+	result = get_current_directory(cwd);
 	CU_ASSERT_EQUAL(result, 0);
 }
 
-void test_get_target_path(void)
+void	test_get_target_path(void)
 {
-	t_minishell shell;
+	t_minishell	shell;
+	char		*path;
 
 	init_shell_mock(&shell);
-	char *path = NULL;
+	path = NULL;
 
 	char *args_no_arg[] = { "cd", NULL };
 	int result = get_target_path_mock(args_no_arg, &shell, &path);
@@ -77,26 +79,25 @@ void test_get_target_path(void)
 	CU_ASSERT_STRING_EQUAL(path, "/usr/local");
 }
 
-void test_change_directory(void)
+void	test_change_directory(void)
 {
-	int result_valid = change_directory("/tmp"); // should exist
+	int result_valid = change_directory("/tmp");
 	int result_invalid = change_directory("/this/path/should/not/exist");
 
 	CU_ASSERT_EQUAL(result_valid, 0);
 	CU_ASSERT_EQUAL(result_invalid, 1);
 }
 
-void test_update_environment_mocked(void)
+void	test_update_environment_mocked(void)
 {
-	t_minishell shell;
-
+	t_minishell	shell;
 
 	char oldpwd[PATH_MAX] = "/mock/oldpwd";
 	int result = update_environment_mock(oldpwd, &shell);
 	CU_ASSERT_EQUAL(result, 0);
 }
 
-void test_builtin_cd(void)
+void	test_builtin_cd(void)
 {
 	t_minishell shell = create_mock_shell(42, 0);
 	init_shell_mock(&shell);

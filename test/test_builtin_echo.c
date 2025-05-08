@@ -6,14 +6,16 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 21:05:22 by dlemaire          #+#    #+#             */
-/*   Updated: 2025/04/29 21:41:55 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:37:57 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.h"
 
-t_command *create_mock_command(char **args, int fd) {
+t_command	*create_mock_command(char **args, int fd)
+{
 	t_command *cmd = malloc(sizeof(t_command));
+
 	cmd->args = args;
 
 	if (fd != STDOUT_FILENO) {
@@ -21,17 +23,19 @@ t_command *create_mock_command(char **args, int fd) {
 		file->fd = fd;
 		file->next = NULL;
 		cmd->outfile = file;
-	} else {
+	}
+	else
+	{
 		cmd->outfile = NULL;
 	}
-	return cmd;
+	return (cmd);
 }
 
-// Helper: Redirect stdout to pipe
-int capture_output(char **args, char *buffer, size_t buf_size) {
-	int pipe_fds[2];
-	pipe(pipe_fds);
+int	capture_output(char **args, char *buffer, size_t buf_size)
+{
+	int	pipe_fds[2];
 
+	pipe(pipe_fds);
 	t_command *cmd = create_mock_command(args, pipe_fds[1]);
 	builtin_echo(cmd);
 	close(pipe_fds[1]);
@@ -43,11 +47,11 @@ int capture_output(char **args, char *buffer, size_t buf_size) {
 	free(cmd->outfile);
 	free(cmd);
 
-	return (int)n;
+	return ((int)n);
 }
 
-// Tests
-void test_echo_simple_text(void) {
+void	test_echo_simple_text(void)
+{
 	char *args[] = { "echo", "Hello", "World", NULL };
 	char output[100];
 
@@ -57,7 +61,8 @@ void test_echo_simple_text(void) {
 	CU_ASSERT_TRUE(bytes > 0);
 }
 
-void test_echo_no_newline_flag(void) {
+void	test_echo_no_newline_flag(void)
+{
 	char *args[] = { "echo", "-n", "No", "newline", NULL };
 	char output[100];
 
@@ -67,7 +72,8 @@ void test_echo_no_newline_flag(void) {
 	CU_ASSERT_TRUE(bytes > 0);
 }
 
-void test_echo_multiple_n_flags(void) {
+void	test_echo_multiple_n_flags(void)
+{
 	char *args[] = { "echo", "-n", "-n", "-n", "Still", "no", "newline", NULL };
 	char output[100];
 
@@ -77,7 +83,8 @@ void test_echo_multiple_n_flags(void) {
 	CU_ASSERT_TRUE(bytes > 0);
 }
 
-void test_echo_no_arguments(void) {
+void	test_echo_no_arguments(void)
+{
 	char *args[] = { "echo", NULL };
 	char output[100];
 
@@ -93,7 +100,7 @@ int	add_builtin_echo_tests(void)
 
 	if (!suite)
 		return (1);
-    if (!CU_add_test(suite, "test_echo_simple_text", test_echo_simple_text) ||
+	if (!CU_add_test(suite, "test_echo_simple_text", test_echo_simple_text) ||
 		!CU_add_test(suite, "test_echo_no_newline_flag", test_echo_no_newline_flag) ||
 		!CU_add_test(suite, "test_echo_multiple_n_flags", test_echo_multiple_n_flags) ||
 		!CU_add_test(suite, "test_echo_no_arguments", test_echo_no_arguments))

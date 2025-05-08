@@ -6,30 +6,34 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 21:05:22 by dlemaire          #+#    #+#             */
-/*   Updated: 2025/04/29 21:41:55 by dlemaire         ###   ########.fr       */
+/*   Updated: 2025/05/08 20:02:46 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.h"
 
-void test_is_heredoc_delimiter(void) {
+void	test_is_heredoc_delimiter(void)
+{
 	CU_ASSERT_TRUE(is_heredoc_delimiter("END", "END"));
 	CU_ASSERT_TRUE(is_heredoc_delimiter("END\n", "END"));
 	CU_ASSERT_FALSE(is_heredoc_delimiter("EN", "END"));
 	CU_ASSERT_FALSE(is_heredoc_delimiter("ENDsomething", "END"));
 }
 
-void test_get_env_variable_found(void) {
+void	test_get_env_variable_found(void)
+{
 	char *env[] = {"USER=root", "PATH=/bin", NULL};
 	CU_ASSERT_STRING_EQUAL(get_env_variable("PATH", env), "/bin");
 }
 
-void test_get_env_variable_not_found(void) {
+void	test_get_env_variable_not_found(void)
+{
 	char *env[] = {"USER=root", "PATH=/bin", NULL};
 	CU_ASSERT_PTR_NULL(get_env_variable("FOO", env));
 }
 
-void test_expend_in_heredoc(void) {
+void	test_expend_in_heredoc(void)
+{
 	char *env[] = {"FOO=bar", NULL};
 	char str[64] = "$FOO rest";
 	int fds[2];
@@ -45,7 +49,8 @@ void test_expend_in_heredoc(void) {
 	CU_ASSERT_EQUAL(len, 4);
 }
 
-void test_catch_heredoc_input_quoted_no_expansion(void) {
+void	test_catch_heredoc_input_quoted_no_expansion(void)
+{
 	t_files heredoc = {.heredoc_quote = 1};
 	int fds[2];
 	pipe(fds);
@@ -59,7 +64,7 @@ void test_catch_heredoc_input_quoted_no_expansion(void) {
 	CU_ASSERT_STRING_EQUAL(buf, "$NOT_EXPANDED\n");
 }
 
-int add_heredoc_loop_tests(void)
+int	add_heredoc_loop_tests(void)
 {
     CU_pSuite suite = CU_add_suite("heredoc_loop", 0, 0);
     

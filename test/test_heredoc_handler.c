@@ -12,7 +12,8 @@
 
 #include "test.h"
 
-void test_get_delimiter_basic(void) {
+void	test_get_delimiter_basic(void)
+{
 	t_minishell shell = {0};
 	char *input = "EOF rest";
 	char *result = get_delimiter(input, &shell);
@@ -21,7 +22,8 @@ void test_get_delimiter_basic(void) {
 	free(result);
 }
 
-void test_get_delimiter_with_symbols(void) {
+void	test_get_delimiter_with_symbols(void)
+{
 	t_minishell shell = {0};
 	char *input = "DELIM|next";
 	char *result = get_delimiter(input, &shell);
@@ -30,24 +32,27 @@ void test_get_delimiter_with_symbols(void) {
 	free(result);
 }
 
-void test_is_quoted_delimiter_detects_quotes(void) {
+void	test_is_quoted_delimiter_detects_quotes(void)
+{
 	CU_ASSERT_EQUAL(is_quoted_delimiter("'DELIM'"), 1);
 	CU_ASSERT_EQUAL(is_quoted_delimiter("\"DELIM\""), 1);
 	CU_ASSERT_EQUAL(is_quoted_delimiter("DELIM"), 0);
 	CU_ASSERT_EQUAL(is_quoted_delimiter(NULL), 0);
 }
 
-void test_handle_pipe_token_resets_list(void) {
+void	test_handle_pipe_token_resets_list(void)
+{
 	char *input = strdup("&&");
-	t_list *current = (t_list *)0x1234; // dummy non-null
+	t_list *current = (t_list *)0x1234;
 	handle_pipe_token(&input, &current);
 
 	CU_ASSERT_PTR_NULL(current);
-	CU_ASSERT_PTR_NOT_NULL(input); // was incremented
+	CU_ASSERT_PTR_NOT_NULL(input);
 	free(input);
 }
 
-void test_handle_heredoc_token_adds_heredoc(void) {
+void	test_handle_heredoc_token_adds_heredoc(void)
+{
 	char *input = strdup("<<DELIM more");
 	t_minishell shell = {0};
 	t_list *outer = NULL;
@@ -66,10 +71,11 @@ void test_handle_heredoc_token_adds_heredoc(void) {
 	free(f->delim);
 	free(f);
 	free(current);
-	free(input - 2);  // step back to original malloc ptr
+	free(input - 2);
 }
 
-void test_heredoc_scan_adds_heredocs_and_handles_pipes(void) {
+void	test_heredoc_scan_adds_heredocs_and_handles_pipes(void)
+{
 	char input[] = "<<DELIM1 | <<'DELIM2'";
 	t_minishell shell = {0};
 
@@ -87,8 +93,6 @@ void test_heredoc_scan_adds_heredocs_and_handles_pipes(void) {
 	t_files *f2 = (t_files *)second->content;
 	CU_ASSERT_STRING_EQUAL(f1->delim, "DELIM1");
 	CU_ASSERT_STRING_EQUAL(f2->delim, "'DELIM2'");
-
-	// Cleanup
 	free(f1->delim);
 	free(f2->delim);
 	free(f1);
@@ -97,20 +101,20 @@ void test_heredoc_scan_adds_heredocs_and_handles_pipes(void) {
 	free(second);
 }
 
-int add_heredoc_handler_tests(void)
+int	add_heredoc_handler_tests(void)
 {
-    CU_pSuite suite = CU_add_suite("heredoc_handler", 0, 0);
-    
-    if (!suite)
-        return (1);
-    
-    if (!CU_add_test(suite, "test_get_delimiter_basic", test_get_delimiter_basic) ||
-        !CU_add_test(suite, "test_get_delimiter_with_symbols", test_get_delimiter_with_symbols) ||
-        !CU_add_test(suite, "test_is_quoted_delimiter_detects_quotes", test_is_quoted_delimiter_detects_quotes) ||
-        !CU_add_test(suite, "test_handle_heredoc_token_adds_heredoc", test_handle_heredoc_token_adds_heredoc) ||
-        !CU_add_test(suite, "test_heredoc_scan_adds_heredocs_and_handles_pipes", test_heredoc_scan_adds_heredocs_and_handles_pipes))
-    {
-        return (1);
-    }
-    return (0);
+	CU_pSuite suite = CU_add_suite("heredoc_handler", 0, 0);
+	
+	if (!suite)
+		return (1);
+	
+	if (!CU_add_test(suite, "test_get_delimiter_basic", test_get_delimiter_basic) ||
+		!CU_add_test(suite, "test_get_delimiter_with_symbols", test_get_delimiter_with_symbols) ||
+		!CU_add_test(suite, "test_is_quoted_delimiter_detects_quotes", test_is_quoted_delimiter_detects_quotes) ||
+		!CU_add_test(suite, "test_handle_heredoc_token_adds_heredoc", test_handle_heredoc_token_adds_heredoc) ||
+		!CU_add_test(suite, "test_heredoc_scan_adds_heredocs_and_handles_pipes", test_heredoc_scan_adds_heredocs_and_handles_pipes))
+	{
+		return (1);
+	}
+	return (0);
 }
