@@ -78,7 +78,8 @@ Strict coding guidelines for the 42 School curriculum. Here is a concise summary
 
 - [Crafting Interpreters](https://craftinginterpreters.com/contents.html)
 - [Bash Man](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html)
-- Compilers - Principles, Techniques and Tools (2nd) Pearson-2006 
+- Compilers - Principles, Techniques and Tools (2nd) Pearson-2006
+- [Main repo](https://github.com/tmurua/minishell)
 
 ---
 
